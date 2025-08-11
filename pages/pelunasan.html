@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AppPiutang | Pelunasan</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="../assets/plugins/fontawesome-free/css/all.min.css"
+    />
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../assets/dist/css/adminlte.min.css" />
+
+    <!-- SweetAlert2 -->
+    <link
+      rel="stylesheet"
+      href="../assets/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css"
+    />
+
+    <!-- Select2 -->
+    <link
+      rel="stylesheet"
+      href="../assets/plugins/select2/css/select2.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../assets/plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css"
+    />
+
+    <!-- Bootstrap Datepicker CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css"
+    />
+
+    <!-- Toastr -->
+    <link rel="stylesheet" href="../assets/plugins/toastr/toastr.min.css" />
+
+    <style>
+      .select2-selection__rendered {
+        line-height: 38px !important; /* Sesuaikan dengan tinggi input */
+      }
+
+      .select2-container .select2-selection--single {
+        height: 40px !important; /* Sesuaikan juga tinggi input */
+      }
+
+      .select2-selection__arrow {
+        height: 38px !important;
+      }
+    </style>
+  </head>
+  <body class="hold-transition sidebar-mini sidebar-collapse">
+    <div class="wrapper">
+      <!-- Navbar -->
+      <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"
+              ><i class="fas fa-bars"></i
+            ></a>
+          </li>
+          <li class="nav-item d-none d-sm-inline-block">
+            <a href="../index.html" class="nav-link">Dashboard</a>
+          </li>
+          <li class="nav-item d-none d-sm-inline-block">
+            <a href="vendor.html" class="nav-link">Vendor</a>
+          </li>
+          <li class="nav-item d-none d-sm-inline-block">
+            <a href="invoice.html" class="nav-link">Invoice</a>
+          </li>
+          <li class="nav-item d-none d-sm-inline-block">
+            <a href="pelunasan.html" class="nav-link">Pelunasan</a>
+          </li>
+        </ul>
+
+        <!-- Right navbar links -->
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#" id="logoutBtn" title="Logout">
+              <i class="fas fa-sign-out-alt"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+              <i class="fas fa-expand-arrows-alt"></i>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- /.navbar -->
+
+      <!-- Main Sidebar Container -->
+      <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="#" class="brand-link">
+          <img
+            src="../assets/dist/img/AdminLTELogo.png"
+            alt="Logo"
+            class="brand-image img-circle elevation-3"
+            style="opacity: 0.8"
+          />
+          <span class="brand-text font-weight-light">AppPiutang</span>
+        </a>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+          <!-- (user panel, search, etc. if perlu) -->
+
+          <!-- Sidebar Menu -->
+          <nav class="mt-2">
+            <ul
+              class="nav nav-pills nav-sidebar flex-column"
+              data-widget="treeview"
+              role="menu"
+              data-accordion="false"
+            >
+              <!-- Dashboard -->
+              <li class="nav-item">
+                <a href="../index.html" class="nav-link">
+                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <p>Dashboard</p>
+                </a>
+              </li>
+
+              <!-- Vendor -->
+              <li class="nav-item">
+                <a href="vendor.html" class="nav-link">
+                  <i class="nav-icon fas fa-store"></i>
+                  <p>Vendor</p>
+                </a>
+              </li>
+
+              <!-- Invoice -->
+              <li class="nav-item">
+                <a href="invoice.html" class="nav-link">
+                  <i class="nav-icon fas fa-file-invoice"></i>
+                  <p>Invoice</p>
+                </a>
+              </li>
+
+              <!-- Pelunasan -->
+              <li class="nav-item">
+                <a href="pelunasan.html" class="nav-link">
+                  <i class="nav-icon fas fa-hand-holding-usd"></i>
+                  <p>Pelunasan</p>
+                </a>
+              </li>
+            </ul>
+          </nav>
+          <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+      </aside>
+
+      <!-- Content Wrapper. Contains page content -->
+      <div class="content-wrapper">
+        <!-- Content Header -->
+        <section class="content-header">
+          <div class="container-fluid">
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <h1>Pelunasan</h1>
+              </div>
+              <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                  <li class="breadcrumb-item">
+                    <a href="../index.html">Home</a>
+                  </li>
+                  <li class="breadcrumb-item active">Pelunasan</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+          <div class="card">
+            <div
+              class="card-header d-flex justify-content-between align-items-center"
+            >
+              <h3 class="card-title">Daftar Invoice Per Vendor</h3>
+              <div
+                id="total-hutang"
+                style="font-weight: bold; font-size: 18px"
+              ></div>
+            </div>
+            <div class="card-body">
+              <div id="vendor-tables" class="row"></div>
+            </div>
+            <div id="loadingOverlay" class="overlay d-none">
+              <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+            </div>
+          </div>
+          <!-- Modal Bayar (Large) -->
+          <div
+            class="modal fade"
+            id="modal-pay"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="modalPayLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-lg" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">
+                    <i class="fas fa-hand-holding-usd"></i> Pembayaran
+                  </h5>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Tutup"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <form id="form-pay">
+                    <div class="row">
+                      <div class="col-md-4 form-group">
+                        <label for="payTanggalInput">Tanggal</label>
+                        <div class="input-group date" id="payTanggalPicker">
+                          <div class="input-group-prepend">
+                            <span class="input-group-text"
+                              ><i class="far fa-calendar-alt"></i
+                            ></span>
+                          </div>
+                          <input
+                            type="text"
+                            id="payTanggalInput"
+                            class="form-control"
+                            autocomplete="off"
+                          />
+                        </div>
+                      </div>
+
+                      <div class="col-md-4 form-group">
+                        <label for="payTotalTagihan">Total Tagihan</label>
+                        <input
+                          type="text"
+                          id="payTotalTagihan"
+                          class="form-control"
+                          autocomplete="off"
+                        />
+                      </div>
+
+                      <div class="col-md-4 form-group">
+                        <label for="payTotalBayar">Total Bayar</label>
+                        <input
+                          type="text"
+                          id="payTotalBayar"
+                          class="form-control"
+                          autocomplete="off"
+                        />
+                      </div>
+                    </div>
+
+                    <!-- hidden fields untuk menyimpan context -->
+                    <input type="hidden" id="payVendorId" value="" />
+                    <input type="hidden" id="paySelectedIds" value="[]" />
+                  </form>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                  >
+                    Batal
+                  </button>
+                  <button
+                    type="button"
+                    id="btn-pay-submit"
+                    class="btn btn-primary"
+                  >
+                    Simpan
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Modal Pelunasan (Extra Large) -->
+          <div
+            class="modal fade"
+            id="modal-settlements"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="modalSettlementsLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog modal-xl" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title">
+                    <i class="fas fa-list"></i> Daftar Pelunasan
+                  </h5>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Tutup"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <table
+                    id="table-settlements"
+                    class="table table-striped table-bordered table-sm"
+                  >
+                    <thead>
+                      <tr>
+                        <th style="width: 60px">No</th>
+                        <th>Tanggal</th>
+                        <th>No Inv Terbayar</th>
+                        <th class="text-right">Total Tagihan</th>
+                        <th class="text-right">Total Bayar</th>
+                        <th style="width: 80px">Aksi</th>
+                      </tr>
+                    </thead>
+                    <tbody></tbody>
+                  </table>
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-secondary"
+                    data-dismiss="modal"
+                  >
+                    Tutup
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- /.content -->
+      </div>
+      <!-- /.content-wrapper -->
+
+      <!-- Footer -->
+      <footer class="main-footer">
+        <div class="float-right d-none d-sm-block"><b>Version</b> 1.0.0</div>
+        <strong>&copy; 2025 <a href="#">AppPiutang</a>.</strong> All rights
+        reserved.
+      </footer>
+    </div>
+    <!-- ./wrapper -->
+
+    <!-- jQuery -->
+    <script src="../assets/plugins/jquery/jquery.min.js"></script>
+    <!-- Bootstrap 4 -->
+    <script src="../assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- AdminLTE App -->
+    <script src="../assets/dist/js/adminlte.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="../assets/plugins/sweetalert2/sweetalert2.min.js"></script>
+
+    <!-- Select2 -->
+    <script src="../assets/plugins/select2/js/select2.full.min.js"></script>
+
+    <!-- Bootstrap Datepicker JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+
+    <!-- Toastr -->
+    <script src="../assets/plugins/toastr/toastr.min.js"></script>
+
+    <!-- Script khusus halaman Invoice -->
+    <script>
+      const token = sessionStorage.getItem("authToken");
+      const expiry = sessionStorage.getItem("authExpiry");
+
+      if (!token || !expiry || Date.now() > expiry) {
+        sessionStorage.clear();
+        window.location.href = "lockscreen.html";
+      }
+
+      document
+        .getElementById("logoutBtn")
+        ?.addEventListener("click", function (e) {
+          e.preventDefault();
+          if (confirm("Yakin mau keluar?")) {
+            sessionStorage.clear();
+            window.location.href = "lockscreen.html";
+          }
+        });
+
+      const API_URL =
+        "https://script.google.com/macros/s/AKfycbyVnN6XoE6ZYJsAEqLVz5yHOCbGd0Soo425i1W8yu8rxwrWpWcUYEWWp_NwenBW1lIL/exec";
+      // Utility: toggle spinner overlay loading
+      function setLoading(isLoading) {
+        const overlay = document.getElementById("loadingOverlay");
+        overlay.classList.toggle("d-none", !isLoading);
+      }
+
+      function setActiveMenuForPelunasanPage() {
+        // hapus active pada semua nav-link dulu
+        document
+          .querySelectorAll(".nav-link")
+          .forEach((a) => a.classList.remove("active"));
+
+        // aktifkan link yang mengarah ke pelunasan.html
+        const anchors = Array.from(document.querySelectorAll("a.nav-link"));
+        anchors.forEach((a) => {
+          try {
+            const href = a.getAttribute("href") || "";
+            if (href.endsWith("pelunasan.html") || href === "pelunasan.html") {
+              a.classList.add("active");
+              // jika ada parent li, beri juga class active/menu-open (safe)
+              const li = a.closest(".nav-item");
+              if (li) li.classList.add("menu-open");
+            }
+          } catch (e) {
+            /* ignore */
+          }
+        });
+
+        // juga coba beri active pada top navbar (jika ada link yang cocok)
+        const topNav = Array.from(document.querySelectorAll(".navbar-nav a"));
+        topNav.forEach((a) => {
+          const href = a.getAttribute("href") || "";
+          if (href.endsWith("pelunasan.html")) a.classList.add("active");
+        });
+      }
+
+      async function fetchData(table) {
+        const cacheBuster = `&_ts=${Date.now()}`; // waktu sekarang sebagai anti-cache
+        const res = await fetch(
+          `${API_URL}?table=${table}&action=read${cacheBuster}`
+        );
+        return await res.json();
+      }
+
+      function formatDate(dateStr) {
+        if (!dateStr) return "-";
+
+        const date = new Date(dateStr);
+        // Tambahkan 7 jam (7 * 60 * 60 * 1000 ms)
+        date.setTime(date.getTime() + 7 * 60 * 60 * 1000);
+
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+
+        return `${year}-${month}-${day}`;
+      }
+
+      // konversi yyyy-mm-dd -> dd-mm-yyyy (untuk datepicker default)
+      function formatYMDtoDMY(dateStr) {
+        if (!dateStr || dateStr === "-") return "";
+        const [y, m, d] = dateStr.split("-");
+        return `${d}-${m}-${y}`;
+      }
+
+      function getMinDueDate(invoices) {
+        if (invoices.length === 0) return "9999-12-31";
+        return invoices.reduce((min, inv) => {
+          const date = inv.due_date || "9999-12-31";
+          return new Date(date) < new Date(min) ? date : min;
+        }, "9999-12-31");
+      }
+
+      function getHeaderColor(index) {
+        const colors = [
+          "#007bff",
+          "#28a745",
+          "#ffc107",
+          "#17a2b8",
+          "#6f42c1",
+          "#fd7e14",
+        ];
+        return colors[index % colors.length];
+      }
+
+      function formatCurrency(num) {
+        if (!num) return "0";
+        return parseFloat(num).toLocaleString("id-ID");
+      }
+
+      // --- GLOBAL CACHE (tempat simpan agar modal tidak perlu re-load) ---
+      let cachedReceivables = [];
+      let cachedRecedetails = [];
+      let cachedInvoices = []; // untuk menghubungkan invoice_id -> no_inv
+
+      async function loadPelunasan() {
+        setLoading(true);
+        try {
+          // ambil semua yang dibutuhkan
+          const [vendors, invoices, receivables, recedetails] =
+            await Promise.all([
+              fetchData("vendors"),
+              fetchData("invoices"),
+              fetchData("receivables").catch(() => []),
+              fetchData("recedetails").catch(() => []),
+            ]);
+
+          // update cache global
+          cachedReceivables = Array.isArray(receivables) ? receivables : [];
+          cachedRecedetails = Array.isArray(recedetails) ? recedetails : [];
+          cachedInvoices = Array.isArray(invoices) ? invoices : [];
+
+          // tentukan invoices yang belum lunas untuk grouping
+          const belumLunas = invoices.filter(
+            (inv) =>
+              !inv.tanggal_lunas || String(inv.tanggal_lunas).trim() === ""
+          );
+
+          // urutkan vendor berdasarkan min due date dari invoices belum lunas (vendor tanpa invoice => akhir)
+          const vendorOrder = [...vendors].sort((a, b) => {
+            const minDueA = getMinDueDate(
+              belumLunas.filter((inv) => inv.vendor_id == a.id)
+            );
+            const minDueB = getMinDueDate(
+              belumLunas.filter((inv) => inv.vendor_id == b.id)
+            );
+            // jika vendor tidak punya invoice set date besar agar di akhir
+            return new Date(minDueA) - new Date(minDueB);
+          });
+
+          const container = document.getElementById("vendor-tables");
+          container.innerHTML = "";
+          let grandTotal = 0;
+
+          vendorOrder.forEach((vendor, idx) => {
+            // invoices untuk vendor ini yang belum lunas
+            const vendorInvoices = belumLunas
+              .filter((inv) => inv.vendor_id == vendor.id)
+              .sort(
+                (a, b) =>
+                  new Date(a.due_date || "9999-12-31") -
+                  new Date(b.due_date || "9999-12-31")
+              );
+
+            const totalVendor = vendorInvoices.reduce(
+              (sum, inv) => sum + (parseFloat(inv.total_inv) || 0),
+              0
+            );
+            grandTotal += totalVendor;
+
+            const tableId = `table-vendor-${vendor.id}`;
+            const headerColor = getHeaderColor(idx);
+
+            // Jika tidak ada invoice belum lunas -> jangan tampilkan tombol Bayar & tampilkan pesan
+            const hasInvoices = vendorInvoices.length > 0;
+            const bayarButtonHtml = hasInvoices
+              ? `<button id="pay-btn-${vendor.id}" class="btn btn-light btn-sm mr-2" disabled>Bayar (0) [0]</button>`
+              : ``;
+
+            const tableBodyHtml = hasInvoices
+              ? vendorInvoices
+                  .map(
+                    (inv) => `
+                  <tr>
+                    <td class="text-center">
+                      <input type="checkbox" class="row-check" data-id="${
+                        inv.id
+                      }" data-total="${parseFloat(inv.total_inv) || 0}">
+                    </td>
+                    <td>${formatDate(inv.tanggal_inv)}</td>
+                    <td>${inv.no_inv || "-"}</td>
+                    <td class="text-right">${(
+                      parseFloat(inv.total_inv) || 0
+                    ).toLocaleString("id-ID")}</td>
+                    <td>${formatDate(inv.due_date)}</td>
+                  </tr>
+                `
+                  )
+                  .join("")
+              : `<tr><td class="text-center" colspan="5">Tidak ada invoice belum lunas</td></tr>`;
+
+            const cardHtml = `
+              <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card h-100">
+                  <div class="card-header d-flex justify-content-between align-items-center" style="background-color:${headerColor}; color:white;">
+                    <div><h5 class="mb-0">${vendor.nama}</h5></div>
+                    <div>
+                      ${bayarButtonHtml}
+                      <button id="settle-btn-${
+                        vendor.id
+                      }" class="btn btn-outline-light btn-sm">Pelunasan</button>
+                    </div>
+                  </div>
+                  <div class="card-body p-0">
+                    <table id="${tableId}" class="table table-bordered table-sm mb-0">
+                      <thead class="text-center">
+                        <tr>
+                          <th><input type="checkbox" class="check-all" data-table="${tableId}" ${
+              hasInvoices ? "" : "disabled"
+            }></th>
+                          <th>Tanggal Inv</th>
+                          <th>No Inv</th>
+                          <th>Total Inv</th>
+                          <th>Due Date</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        ${tableBodyHtml}
+                      </tbody>
+                      <tfoot>
+                        <tr style="font-weight:bold;">
+                          <td colspan="3" class="text-right">Total:</td>
+                          <td class="text-right">${totalVendor.toLocaleString(
+                            "id-ID"
+                          )}</td>
+                          <td></td>
+                        </tr>
+                      </tfoot>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            `;
+
+            container.insertAdjacentHTML("beforeend", cardHtml);
+          });
+
+          document.getElementById(
+            "total-hutang"
+          ).innerHTML = `Total Hutang: Rp ${grandTotal.toLocaleString(
+            "id-ID"
+          )}`;
+
+          // pasang listener selection & tombol seperti sebelumnya (aman jika tabel kosong)
+          attachSelectionListeners();
+
+          // pasang listener untuk tombol pelunasan (view)
+          document.querySelectorAll("[id^='settle-btn-']").forEach((btn) => {
+            btn.addEventListener("click", function () {
+              const vendorId = this.id.replace("settle-btn-", "");
+              // simpan vendorId di modal supaya re-render setelah hapus tahu vendor
+              document.getElementById("modal-settlements").dataset.vendorId =
+                vendorId;
+              // buka modal dan render dari cache (tanpa fetch)
+              populatePelunasanModal(vendorId);
+              $("#modal-settlements").modal("show");
+            });
+          });
+        } catch (err) {
+          console.error("Gagal memuat data pelunasan:", err);
+        } finally {
+          setLoading(false);
+        }
+      }
+
+      // Render modal settlements (data dari cache, tanpa fetch)
+      function populatePelunasanModal(vendorId) {
+        const tbody = document.querySelector("#table-settlements tbody");
+        tbody.innerHTML = "";
+
+        // filter receivables untuk vendor
+        const rows = cachedReceivables
+          .filter((r) => String(r.vendor_id) === String(vendorId))
+          // urutkan descending tanggal agar terbaru di atas (opsional)
+          .sort(
+            (a, b) =>
+              new Date(b.tanggal || "1970-01-01") -
+              new Date(a.tanggal || "1970-01-01")
+          );
+
+        rows.forEach((r, idx) => {
+          // cari recedetails yang terkait
+          const related = cachedRecedetails.filter(
+            (rd) => String(rd.receivable_id) === String(r.id)
+          );
+          // kumpulkan no_inv dari invoice_id -> cari dari cachedInvoices
+          const invNos = related
+            .map((rd) => {
+              const inv = cachedInvoices.find(
+                (i) => String(i.id) === String(rd.invoice_id)
+              );
+              return inv ? inv.no_inv || inv.id : rd.invoice_id;
+            })
+            .join(", ");
+
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td class="text-center">${idx + 1}</td>
+            <td>${formatDate(r.tanggal)}</td>
+            <td>${invNos || "-"}</td>
+            <td class="text-right">${(
+              parseFloat(r.total_tagihan) || 0
+            ).toLocaleString("id-ID")}</td>
+            <td class="text-right">${(
+              parseFloat(r.total_bayar) || 0
+            ).toLocaleString("id-ID")}</td>
+            <td class="text-center">
+              <button class="btn btn-sm btn-danger btn-del-receivable" data-id="${
+                r.id
+              }" title="Hapus"><i class="fas fa-trash-alt"></i></button>
+            </td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        // pasang listener tombol hapus (delegation: hapus semua lalu re-attach)
+        tbody.querySelectorAll(".btn-del-receivable").forEach((btn) => {
+          btn.addEventListener("click", onDeleteReceivableClick);
+        });
+      }
+
+      // Handler klik hapus receivable
+      async function onDeleteReceivableClick(e) {
+        const id = e.currentTarget.dataset.id;
+        const result = await Swal.fire({
+          title: "Yakin ingin menghapus data pelunasan ini?",
+          text: "Semua recedetails terkait akan dihapus dan tanggal lunas pada invoice terkait akan dikosongkan.",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonText: "Ya, Hapus!",
+          cancelButtonText: "Batal",
+        });
+        if (!result.isConfirmed) return;
+
+        // Masukkan proses hapus ke queue
+        addActionToQueue("Menghapus receivable dan recedetails", async () => {
+          try {
+            // 1. Ambil data terbaru
+            let allRecedetails = await fetchData("recedetails");
+            let allInvoices = await fetchData("invoices");
+
+            // 2. Filter recedetails terkait receivable id
+            const relatedRecedetails = allRecedetails.filter(
+              (d) => String(d.receivable_id) === String(id)
+            );
+
+            // 3. Bulk delete recedetails (jika ada)
+            if (relatedRecedetails.length > 0) {
+              const recedetailRecords = relatedRecedetails.map((d) => ({
+                id: d.id,
+              }));
+              await fetch(
+                `${API_URL}?table=recedetails&action=bulk_delete&records=${encodeURIComponent(
+                  JSON.stringify(recedetailRecords)
+                )}`,
+                { method: "POST" }
+              );
+            }
+
+            // 4. Bulk edit invoices (kosongkan tanggal_lunas)
+            const invoiceIds = [
+              ...new Set(relatedRecedetails.map((r) => r.invoice_id)),
+            ];
+            if (invoiceIds.length > 0) {
+              const invoiceRecords = invoiceIds.map((invId) => ({
+                id: invId,
+                tanggal_lunas: "",
+              }));
+              await fetch(
+                `${API_URL}?table=invoices&action=bulk_update&records=${encodeURIComponent(
+                  JSON.stringify(invoiceRecords)
+                )}`,
+                { method: "POST" }
+              );
+            }
+
+            // 5. Hapus receivable utama
+            await fetch(
+              `${API_URL}?table=receivables&action=delete&id=${encodeURIComponent(
+                id
+              )}`,
+              { method: "POST" }
+            );
+
+            // 6. Verifikasi manual
+            const afterReceivables = await fetchData("receivables");
+            const afterRecedetails = await fetchData("recedetails");
+            const afterInvoices = await fetchData("invoices");
+
+            cachedReceivables = Array.isArray(afterReceivables)
+              ? afterReceivables
+              : [];
+            cachedRecedetails = Array.isArray(afterRecedetails)
+              ? afterRecedetails
+              : [];
+            cachedInvoices = Array.isArray(afterInvoices)
+              ? afterInvoices
+              : cachedInvoices;
+
+            const receivableDeleted = !cachedReceivables.find(
+              (x) => String(x.id) === String(id)
+            );
+            const recedetailsDeleted = !cachedRecedetails.some(
+              (d) => String(d.receivable_id) === String(id)
+            );
+            const invoicesCleared = !cachedInvoices.some(
+              (d) => invoiceIds.includes(d.id) && d.tanggal_lunas
+            );
+
+            if (receivableDeleted && recedetailsDeleted && invoicesCleared) {
+              // Optional: refresh modal jika masih terbuka
+              const modalShown = document
+                .querySelector("#modal-settlements")
+                .classList.contains("show");
+              if (modalShown) {
+                const removedVendorId =
+                  document.getElementById("modal-settlements").dataset
+                    .vendorId || null;
+                if (removedVendorId) populatePelunasanModal(removedVendorId);
+              }
+              return Promise.resolve();
+            } else {
+              return Promise.reject(
+                new Error("Gagal menghapus/clear semua data terkait receivable")
+              );
+            }
+          } catch (err) {
+            return Promise.reject(err);
+          }
+        });
+      }
+
+      // attach listeners for all dynamically created tables
+      function attachSelectionListeners() {
+        const container = document.getElementById("vendor-tables");
+
+        // check-all behaviour
+        container.querySelectorAll(".check-all").forEach((chk) => {
+          chk.addEventListener("change", function () {
+            const table = document.getElementById(this.dataset.table);
+            const checked = this.checked;
+            table.querySelectorAll(".row-check").forEach((rowChk) => {
+              rowChk.checked = checked;
+            });
+            updateTableSelection(this.dataset.table);
+          });
+        });
+
+        // row checkbox behaviour
+        container.querySelectorAll(".row-check").forEach((rowChk) => {
+          rowChk.addEventListener("change", function () {
+            // find parent table id
+            const table = this.closest("table");
+            updateTableSelection(table.id);
+          });
+        });
+
+        // init all pay buttons
+        container.querySelectorAll("[id^='pay-btn-']").forEach((btn) => {
+          btn.addEventListener("click", function () {
+            const vendorId = this.id.replace("pay-btn-", "");
+            openPayModalForTable(`table-vendor-${vendorId}`);
+          });
+        });
+
+        // initialize counts / sums (make sure buttons show 0 initially)
+        container
+          .querySelectorAll("table")
+          .forEach((t) => updateTableSelection(t.id));
+      }
+
+      // hitung selected count & sum untuk table tertentu, lalu update tombol
+      function updateTableSelection(tableId) {
+        const table = document.getElementById(tableId);
+        if (!table) return;
+        const rows = Array.from(table.querySelectorAll(".row-check"));
+        let count = 0;
+        let sum = 0;
+        rows.forEach((r) => {
+          if (r.checked) {
+            count++;
+            const val = parseFloat(r.dataset.total) || 0;
+            sum += val;
+          }
+        });
+
+        // find vendor id from tableId
+        const vendorId = tableId.replace("table-vendor-", "");
+        const btn = document.getElementById(`pay-btn-${vendorId}`);
+        if (btn) {
+          btn.innerHTML = `Bayar (${count}) [${formatCurrency(sum)}]`;
+          btn.disabled = count === 0;
+          // store current selection on button dataset for modal usage
+          btn.dataset.selectedCount = count;
+          btn.dataset.selectedSum = sum;
+          // also store selected invoice ids
+          const selectedIds = rows
+            .filter((r) => r.checked)
+            .map((r) => r.dataset.id);
+          btn.dataset.selectedIds = JSON.stringify(selectedIds);
+        }
+      }
+
+      // buka modal & isi fieldnya
+      function openPayModalForTable(tableId) {
+        const vendorId = tableId.replace("table-vendor-", "");
+        const btn = document.getElementById(`pay-btn-${vendorId}`);
+        if (!btn) return;
+        const sum = parseFloat(btn.dataset.selectedSum) || 0;
+
+        // set tanggal default hari ini in dd-mm-yyyy
+        const today = new Date();
+        const dd = String(today.getDate()).padStart(2, "0");
+        const mm = String(today.getMonth() + 1).padStart(2, "0");
+        const yyyy = today.getFullYear();
+        const todayStr = `${dd}-${mm}-${yyyy}`;
+
+        // set datepicker value
+        $("#payTanggalPicker").datepicker("update", todayStr); // gunakan datepicker jQuery
+        // set totals (formatted)
+        document.getElementById("payTotalTagihan").value = formatCurrency(sum);
+        document.getElementById("payTotalBayar").value = formatCurrency(sum);
+
+        // set hidden input vendor id and selected invoice ids
+        document.getElementById("payVendorId").value = vendorId;
+        document.getElementById("paySelectedIds").value =
+          btn.dataset.selectedIds || "[]";
+
+        // show modal
+        $("#modal-pay").modal("show");
+      }
+
+      // Inisialisasi datepicker untuk modal (format dd-mm-yyyy)
+      document.addEventListener("DOMContentLoaded", () => {
+        loadPelunasan();
+        setActiveMenuForPelunasanPage();
+
+        // inisialisasi datepicker modal
+        $("#payTanggalPicker").datepicker({
+          format: "dd-mm-yyyy",
+          autoclose: true,
+          todayHighlight: true,
+        });
+
+        // jika modal dibuka, fokus ke total bayar (opsional)
+        $("#modal-pay").on("shown.bs.modal", function () {
+          $("#payTotalBayar").focus();
+        });
+      });
+
+      /* ---------- Helper: konversi dd-mm-yyyy atau dd/mm/yyyy -> yyyy-mm-dd ---------- */
+      function formatDateToYMD(dateStr) {
+        if (!dateStr) return "";
+        // terima dd-mm-yyyy atau dd/mm/yyyy
+        const sep = dateStr.includes("/")
+          ? "/"
+          : dateStr.includes("-")
+          ? "-"
+          : null;
+        if (!sep) return "";
+        const parts = dateStr.split(sep);
+        if (parts.length !== 3) return "";
+        const [dd, mm, yyyy] = parts;
+        return `${yyyy}-${mm}-${dd}`;
+      }
+
+      /* ---------- Next ID helpers ---------- */
+      async function retryFetch(url, options = {}, retries = 3, delayMs = 500) {
+        for (let i = 0; i < retries; i++) {
+          try {
+            const res = await fetch(url, options);
+            if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+            return await res.json();
+          } catch (err) {
+            if (i === retries - 1) throw err;
+            await new Promise((r) => setTimeout(r, delayMs));
+          }
+        }
+      }
+
+      async function getNextReceivableId() {
+        const url = `${API_URL}?table=receivables&action=get_next_id`;
+        try {
+          const data = await retryFetch(url);
+          if (!data.next_id || isNaN(data.next_id))
+            throw new Error("Invalid next_id");
+          return data.next_id;
+        } catch (err) {
+          console.warn(
+            "getNextReceivableId failed after retry, fallback to Date.now():",
+            err
+          );
+          return Date.now();
+        }
+      }
+
+      async function getNextRecedetailId() {
+        const url = `${API_URL}?table=recedetails&action=get_next_id`;
+        try {
+          const data = await retryFetch(url);
+          if (!data.next_id || isNaN(data.next_id))
+            throw new Error("Invalid next_id");
+          return data.next_id;
+        } catch (err) {
+          console.warn(
+            "getNextRecedetailId failed after retry, fallback to Date.now():",
+            err
+          );
+          return Date.now();
+        }
+      }
+
+      /* ---------- Queue & helpers (adopsi dari contoh Anda) ---------- */
+      let actionQueue = [];
+      let refreshTimer = null;
+      let refreshDelay = 5000; // 5 detik setelah semua aksi selesai
+
+      function addActionToQueue(description, processFn) {
+        const actionId =
+          Date.now() + "-" + Math.random().toString(36).substring(2, 7);
+
+        // Tambahkan ke queue
+        actionQueue.push({
+          id: actionId,
+          description,
+          status: "pending",
+        });
+
+        // Tampilkan toastr untuk pending
+        toastr.info(description + " (sedang diproses...)", "Proses", {
+          timeOut: 0,
+          extendedTimeOut: 0,
+        });
+
+        // Jalankan proses
+        processFn()
+          .then(() => updateActionStatus(actionId, "success"))
+          .catch(() => updateActionStatus(actionId, "error"));
+      }
+
+      function updateActionStatus(id, status) {
+        const action = actionQueue.find((a) => a.id === id);
+        if (!action) return;
+
+        action.status = status;
+
+        // Update toastr sesuai status
+        if (status === "success") {
+          toastr.success(action.description + " berhasil", "Selesai");
+        } else if (status === "error") {
+          toastr.error(action.description + " gagal", "Error");
+        }
+
+        checkQueueCompletion();
+      }
+
+      function isAnyModalOpen() {
+        return document.querySelectorAll(".modal.show").length > 0;
+      }
+
+      function checkQueueCompletion() {
+        const allDone = actionQueue.every((a) => a.status !== "pending");
+
+        if (allDone) {
+          // Jadwalkan refresh
+          if (refreshTimer) clearTimeout(refreshTimer);
+          refreshTimer = setTimeout(tryRefreshPelunasan, refreshDelay);
+        }
+      }
+
+      function tryRefreshPelunasan() {
+        if (!isAnyModalOpen()) {
+          loadPelunasan();
+          actionQueue = []; // kosongkan queue setelah refresh
+        } else {
+          // Tunggu lagi 5 detik jika user masih aktif di modal
+          refreshTimer = setTimeout(tryRefreshPelunasan, 5000);
+        }
+      }
+
+      /* ---------- Submit handler untuk modal 'Bayar' ---------- */
+      document
+        .getElementById("btn-pay-submit")
+        .addEventListener("click", async () => {
+          // Ambil nilai dari modal
+          const tanggalRaw = document
+            .getElementById("payTanggalInput")
+            .value.trim(); // dd-mm-yyyy
+          const tanggalYMD = formatDateToYMD(tanggalRaw);
+          const totalTagihanStr = document
+            .getElementById("payTotalTagihan")
+            .value.trim();
+          const totalBayarStr = document
+            .getElementById("payTotalBayar")
+            .value.trim();
+          const vendorId = document.getElementById("payVendorId").value;
+          const selectedIdsJson =
+            document.getElementById("paySelectedIds").value || "[]";
+
+          let selectedInvoiceIds = [];
+          try {
+            selectedInvoiceIds = JSON.parse(selectedIdsJson);
+          } catch (e) {
+            selectedInvoiceIds = [];
+          }
+
+          // Normalisasi angka (hapus pemisah ribuan '.' dan ganti KOMA dengan titik jika ada)
+          function parseNumberFromFormatted(str) {
+            if (!str) return 0;
+            // hapus non-digit kecuali , dan .
+            let s = String(str).replace(/[^\d,.-]/g, "");
+            // jika ada titik sebagai pemisah ribuan dan koma desimal, kita lebih aman hapus titik lalu ganti koma ke titik
+            // contoh "1.234.567" -> "1234567"; "1.234,56" -> "1234.56"
+            const hasComma = s.indexOf(",") !== -1;
+            const lastDotPos = s.lastIndexOf(".");
+            // heuristik: jika ada titik dan tidak ada koma -> hapus titik
+            if (lastDotPos !== -1 && !hasComma) {
+              s = s.replace(/\./g, "");
+            } else if (lastDotPos !== -1 && hasComma) {
+              // kemungkinan format "1.234,56" -> hapus titik, ganti koma ke titik
+              s = s.replace(/\./g, "").replace(/,/g, ".");
+            } else {
+              s = s.replace(/,/g, "."); // hanya koma -> dianggap desimal
+            }
+            const n = parseFloat(s);
+            return isNaN(n) ? 0 : n;
+          }
+
+          // Helper: verifikasi invoice updated dengan retry
+          async function verifyInvoiceUpdated(
+            invId,
+            expectedYMD,
+            attempts = 3,
+            delayMs = 1000
+          ) {
+            for (let i = 0; i < attempts; i++) {
+              try {
+                const allInv = await fetchData("invoices");
+                const inv = allInv.find((x) => String(x.id) == String(invId));
+                if (inv) {
+                  // gunakan formatDate untuk normalisasi (tambah +7 jam sesuai fungsi Anda)
+                  const invLunasYMD = formatDate(inv.tanggal_lunas);
+                  if (invLunasYMD === expectedYMD) {
+                    return true; // sukses
+                  }
+                }
+              } catch (err) {
+                console.warn("verifyInvoiceUpdated read attempt failed:", err);
+              }
+              // tunggu sebelum retry
+              await new Promise((r) => setTimeout(r, delayMs));
+            }
+            return false; // gagal setelah semua percobaan
+          }
+
+          const totalTagihan = parseNumberFromFormatted(totalTagihanStr);
+          const totalBayar = parseNumberFromFormatted(totalBayarStr);
+
+          // Validasi sederhana
+          if (!tanggalYMD) {
+            toastr.error(
+              "Tanggal harus diisi (format dd-mm-yyyy).",
+              "Validasi"
+            );
+            return;
+          }
+          if (!vendorId) {
+            toastr.error("Vendor tidak ditemukan.", "Validasi");
+            return;
+          }
+          if (!selectedInvoiceIds.length) {
+            toastr.error("Pilih minimal 1 invoice.", "Validasi");
+            return;
+          }
+
+          // Tutup modal segera (sesuai pola yang Anda pakai)
+          $("#modal-pay").modal("hide");
+
+          // Dapatkan next IDs sebelum menambahkan ke queue
+          const newReceivableId = await getNextReceivableId();
+          let nextRecedetailId = await getNextRecedetailId();
+
+          // 1) Tambahkan task untuk membuat receivable (satu record)
+          addActionToQueue("Menambahkan receivable", async () => {
+            try {
+              // coba kirim POST (bisa gagal CORS)
+              await fetch(
+                `${API_URL}?table=receivables&action=create` +
+                  `&id=${newReceivableId}` +
+                  `&tanggal=${encodeURIComponent(tanggalYMD)}` +
+                  `&vendor_id=${encodeURIComponent(vendorId)}` +
+                  `&total_tagihan=${encodeURIComponent(totalTagihan)}` +
+                  `&total_bayar=${encodeURIComponent(totalBayar)}`,
+                { method: "POST" }
+              );
+            } catch (err) {
+              // silent, lanjut ke verifikasi manual
+              console.warn("POST receivables mungkin gagal (CORS).", err);
+            }
+
+            // Verifikasi manual: baca receivables dan cari id baru
+            const all = await fetchData("receivables");
+            const found = all.find(
+              (r) => String(r.id) == String(newReceivableId)
+            );
+            if (found) {
+              return Promise.resolve();
+            } else {
+              return Promise.reject(
+                new Error("Receivable baru tidak ditemukan.")
+              );
+            }
+          });
+
+          // 2) Untuk semua invoice yang dipilih:
+          //    - buat recedetail (bulk_create)
+          //    - update invoice tanggal_lunas (bulk_update)
+
+          addActionToQueue(
+            "Menambahkan recedetails dan memperbarui invoice",
+            async () => {
+              let recedetailRecords = [];
+              let invoiceUpdateRecords = [];
+
+              // Siapkan data untuk bulk_create dan bulk_update
+              selectedInvoiceIds.forEach((invId, idx) => {
+                const recedetailId = nextRecedetailId + idx;
+
+                // a) Data recedetail baru
+                recedetailRecords.push({
+                  id: recedetailId,
+                  receivable_id: newReceivableId,
+                  invoice_id: invId,
+                });
+
+                // b) Data invoice update
+                invoiceUpdateRecords.push({
+                  id: invId,
+                  tanggal_lunas: tanggalYMD,
+                });
+              });
+
+              try {
+                // 1) Bulk create recedetails
+                const urlCreate = `${API_URL}?table=recedetails&action=bulk_create&records=${encodeURIComponent(
+                  JSON.stringify(recedetailRecords)
+                )}`;
+                await fetch(urlCreate, { method: "POST" });
+
+                // 2) Bulk update invoices
+                const urlUpdate = `${API_URL}?table=invoices&action=bulk_update&records=${encodeURIComponent(
+                  JSON.stringify(invoiceUpdateRecords)
+                )}`;
+                await fetch(urlUpdate, { method: "POST" });
+
+                // 3) Verifikasi recedetails
+                const allRecDetails = await fetchData("recedetails");
+                const recOK = recedetailRecords.every((r) =>
+                  allRecDetails.find((d) => String(d.id) === String(r.id))
+                );
+
+                if (!recOK) {
+                  return Promise.reject(
+                    new Error("Verifikasi recedetails gagal")
+                  );
+                }
+
+                // 4) Verifikasi invoices (pakai formatDate seperti kode lama)
+                const allInvoices = await fetchData("invoices");
+                const invOK = invoiceUpdateRecords.every((r) => {
+                  const match = allInvoices.find(
+                    (d) => String(d.id) === String(r.id)
+                  );
+                  if (!match) return false;
+                  return formatDate(match.tanggal_lunas) === r.tanggal_lunas;
+                });
+
+                if (!invOK) {
+                  return Promise.reject(new Error("Verifikasi invoice gagal"));
+                }
+
+                return Promise.resolve();
+              } catch (err) {
+                console.error("Gagal memproses pelunasan:", err);
+                Toast.fire({
+                  icon: "error",
+                  title: "Gagal memproses pelunasan",
+                });
+              }
+            }
+          );
+          // selesai: toastr sudah di-handle oleh addActionToQueue
+        });
+    </script>
+  </body>
+</html>

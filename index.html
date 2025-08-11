@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AppPiutang | Dashboard</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="assets/plugins/fontawesome-free/css/all.min.css"
+    />
+    <!-- AdminLTE -->
+    <link rel="stylesheet" href="assets/dist/css/adminlte.min.css" />
+
+    <style>
+      /* full-screen loading overlay */
+      #loadingOverlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 9999;
+      }
+      #loadingOverlay .spinner {
+        font-size: 2.2rem;
+        color: #007bff;
+      }
+      /* kecilkan teks tanggal di list */
+      .invoice-row .meta {
+        font-size: 0.9rem;
+        color: #6c757d;
+      }
+      .invoice-row .total {
+        font-weight: 600;
+      }
+      .todo-badge {
+        min-width: 90px;
+        display: inline-block;
+        text-align: center;
+      }
+      .invoice-list-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 0.5rem;
+      }
+      .pagination-sm .page-link {
+        padding: 0.25rem 0.5rem;
+      }
+    </style>
+  </head>
+  <body class="hold-transition sidebar-mini sidebar-collapse">
+    <div class="wrapper">
+      <!-- Navbar -->
+      <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"
+              ><i class="fas fa-bars"></i
+            ></a>
+          </li>
+          <li class="nav-item d-none d-sm-inline-block active">
+            <a href="index.html" class="nav-link">Dashboard</a>
+          </li>
+          <li class="nav-item d-none d-sm-inline-block">
+            <a href="pages/vendor.html" class="nav-link">Vendor</a>
+          </li>
+          <li class="nav-item d-none d-sm-inline-block">
+            <a href="pages/invoice.html" class="nav-link">Invoice</a>
+          </li>
+          <li class="nav-item d-none d-sm-inline-block">
+            <a href="pages/pelunasan.html" class="nav-link">Pelunasan</a>
+          </li>
+        </ul>
+
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="#" id="logoutBtn" title="Logout">
+              <i class="fas fa-sign-out-alt"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+              <i class="fas fa-expand-arrows-alt"></i>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Sidebar -->
+      <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <a href="#" class="brand-link">
+          <img
+            src="assets/dist/img/AdminLTELogo.png"
+            alt="Logo"
+            class="brand-image img-circle elevation-3"
+            style="opacity: 0.8"
+          />
+          <span class="brand-text font-weight-light">AppPiutang</span>
+        </a>
+        <div class="sidebar">
+          <nav class="mt-2">
+            <ul
+              class="nav nav-pills nav-sidebar flex-column"
+              data-widget="treeview"
+              role="menu"
+              data-accordion="false"
+            >
+              <li class="nav-item">
+                <a href="index.html" class="nav-link" id="nav-dashboard">
+                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <p>Dashboard</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="pages/vendor.html" class="nav-link" id="nav-vendor">
+                  <i class="nav-icon fas fa-store"></i>
+                  <p>Vendor</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="pages/invoice.html" class="nav-link" id="nav-invoice">
+                  <i class="nav-icon fas fa-file-invoice"></i>
+                  <p>Invoice</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a
+                  href="pages/pelunasan.html"
+                  class="nav-link"
+                  id="nav-pelunasan"
+                >
+                  <i class="nav-icon fas fa-hand-holding-usd"></i>
+                  <p>Pelunasan</p>
+                </a>
+              </li>
+            </ul>
+          </nav>
+        </div>
+      </aside>
+
+      <!-- Content Wrapper -->
+      <div class="content-wrapper">
+        <!-- Loading overlay (full screen) -->
+        <div id="loadingOverlay" class="d-none">
+          <div class="spinner">
+            <i class="fas fa-3x fa-sync-alt fa-spin"></i>
+          </div>
+        </div>
+
+        <!-- Content Header -->
+        <section class="content-header">
+          <div class="container-fluid">
+            <div class="row mb-2">
+              <div class="col-sm-6"><h1>Dashboard</h1></div>
+              <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                  <li class="breadcrumb-item">
+                    <a href="index.html">Home</a>
+                  </li>
+                  <li class="breadcrumb-item active">Dashboard</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+          <div class="container-fluid">
+            <!-- Four small boxes -->
+            <div class="row" id="cards-row">
+              <div class="col-lg-3 col-6">
+                <div class="small-box bg-danger">
+                  <div class="inner">
+                    <h3 id="card-red-count">0 <small>Invoice</small></h3>
+                    <p id="card-red-vendors">Dari 0 Vendor</p>
+                  </div>
+                  <div class="icon"><i class="fas fa-calendar-day"></i></div>
+                  <a
+                    href="pages/pelunasan.html"
+                    class="small-box-footer"
+                    id="card-red-more"
+                    >Sampai 3 hari ke depan
+                    <i class="fas fa-arrow-circle-right"></i
+                  ></a>
+                </div>
+              </div>
+
+              <div class="col-lg-3 col-6">
+                <div class="small-box bg-warning">
+                  <div class="inner">
+                    <h3 id="card-yellow-count">0 <small>Invoice</small></h3>
+                    <p id="card-yellow-vendors">Dari 0 Vendor</p>
+                  </div>
+                  <div class="icon"><i class="fas fa-hourglass-half"></i></div>
+                  <a
+                    href="pages/pelunasan.html"
+                    class="small-box-footer"
+                    id="card-yellow-more"
+                    >Sampai 1 minggu ke depan
+                    <i class="fas fa-arrow-circle-right"></i
+                  ></a>
+                </div>
+              </div>
+
+              <div class="col-lg-3 col-6">
+                <div class="small-box bg-info">
+                  <div class="inner">
+                    <h3 id="card-blue-count">0 <small>Invoice</small></h3>
+                    <p id="card-blue-vendors">Dari 0 Vendor</p>
+                  </div>
+                  <div class="icon"><i class="fas fa-calendar-week"></i></div>
+                  <a
+                    href="pages/pelunasan.html"
+                    class="small-box-footer"
+                    id="card-blue-more"
+                    >Sampai 2 minggu ke depan
+                    <i class="fas fa-arrow-circle-right"></i
+                  ></a>
+                </div>
+              </div>
+
+              <div class="col-lg-3 col-6">
+                <div class="small-box bg-success">
+                  <div class="inner">
+                    <h3 id="card-green-count">0 <small>Invoice</small></h3>
+                    <p id="card-green-vendors">Dari 0 Vendor</p>
+                  </div>
+                  <div class="icon"><i class="fas fa-calendar-alt"></i></div>
+                  <a
+                    href="pages/pelunasan.html"
+                    class="small-box-footer"
+                    id="card-green-more"
+                    >Sampai 1 bulan ke depan
+                    <i class="fas fa-arrow-circle-right"></i
+                  ></a>
+                </div>
+              </div>
+            </div>
+
+            <!-- Invoice List (menggantikan To Do list) -->
+            <div class="card">
+              <div
+                class="card-header d-flex justify-content-between align-items-center"
+              >
+                <h3 class="card-title">
+                  <i class="ion ion-clipboard mr-1"></i>
+                  Invoice Akan Jatuh Tempo
+                </h3>
+                <a href="pages/invoice.html" class="btn btn-primary btn-sm">
+                  Daftar Invoice &rarr;
+                </a>
+              </div>
+              <div class="card-body">
+                <ul
+                  class="todo-list"
+                  id="invoiceList"
+                  data-widget="todo-list"
+                ></ul>
+
+                <div class="invoice-list-footer">
+                  <div id="invoice-summary"></div>
+                  <div>
+                    <nav aria-label="Invoice pagination">
+                      <ul
+                        class="pagination pagination-sm mb-0"
+                        id="invoice-pagination"
+                      ></ul>
+                    </nav>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- short explanation -->
+            <div class="card">
+              <div class="card-body">
+                <p class="mb-0">
+                  Daftar di atas menampilkan invoice yang
+                  <strong>belum dilunasi</strong> dan memiliki due date sampai
+                  31 hari ke depan (termasuk yang sudah lewat). Urutan dimulai
+                  dari yang paling dekat jatuh tempo.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <footer class="main-footer">
+        <div class="float-right d-none d-sm-block"><b>Version</b> 1.0.0</div>
+        <strong>&copy; 2025 <a href="#">AppPiutang</a>.</strong> All rights
+        reserved.
+      </footer>
+    </div>
+
+    <!-- scripts -->
+    <script src="assets/plugins/jquery/jquery.min.js"></script>
+    <script src="assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/dist/js/adminlte.min.js"></script>
+
+    <script>
+      const token = sessionStorage.getItem("authToken");
+      const expiry = sessionStorage.getItem("authExpiry");
+
+      if (!token || !expiry || Date.now() > expiry) {
+        sessionStorage.clear();
+        window.location.href = "pages/lockscreen.html";
+      }
+
+      document
+        .getElementById("logoutBtn")
+        ?.addEventListener("click", function (e) {
+          e.preventDefault();
+          if (confirm("Yakin mau keluar?")) {
+            sessionStorage.clear();
+            window.location.href = "pages/lockscreen.html";
+          }
+        });
+
+      const API_URL =
+        "https://script.google.com/macros/s/AKfycbyVnN6XoE6ZYJsAEqLVz5yHOCbGd0Soo425i1W8yu8rxwrWpWcUYEWWp_NwenBW1lIL/exec";
+
+      // Loading overlay control (sesuai fungsi yang Anda kirim)
+      function setLoading(isLoading) {
+        const overlay = document.getElementById("loadingOverlay");
+        overlay.classList.toggle("d-none", !isLoading);
+      }
+
+      // formatDate -> normalisasi sheet date dan tambahkan +7 jam, keluaran yyyy-mm-dd
+      function formatDate(dateStr) {
+        if (!dateStr) return "-";
+        const date = new Date(dateStr);
+        date.setTime(date.getTime() + 7 * 60 * 60 * 1000);
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        return `${year}-${month}-${day}`;
+      }
+
+      // yyyy-mm-dd -> dd-mm-yyyy
+      function ymdToDmy(ymd) {
+        if (!ymd || ymd === "-") return "-";
+        const p = ymd.split("-");
+        if (p.length !== 3) return ymd;
+        return `${p[2]}-${p[1]}-${p[0]}`;
+      }
+
+      // ambil invoices & vendors, lalu render dashboard dan daftar invoice
+      async function loadDashboardAndList() {
+        setLoading(true);
+        try {
+          const [invoicesRes, vendorsRes] = await Promise.all([
+            fetch(`${API_URL}?table=invoices&action=read&_ts=${Date.now()}`),
+            fetch(`${API_URL}?table=vendors&action=read&_ts=${Date.now()}`),
+          ]);
+          const invoices = await invoicesRes.json();
+          const vendors = await vendorsRes.json();
+          const vendorMap = {};
+          vendors.forEach(
+            (v) => (vendorMap[String(v.id)] = v.nama || "Vendor " + v.id)
+          );
+
+          // compute buckets for cards (same logic like sebelumnya)
+          const today = new Date();
+          const todayMid = new Date(
+            today.getFullYear(),
+            today.getMonth(),
+            today.getDate()
+          );
+          const MS_PER_DAY = 24 * 60 * 60 * 1000;
+          const buckets = {
+            red: { min: 0, max: 3, invoices: [], vendors: new Set() },
+            yellow: { min: 4, max: 7, invoices: [], vendors: new Set() },
+            blue: { min: 8, max: 14, invoices: [], vendors: new Set() },
+            green: { min: 15, max: 31, invoices: [], vendors: new Set() },
+          };
+
+          // prepare list for To Do: filter invoices not yet paid and with due_date
+          const todoCandidates = [];
+
+          invoices.forEach((inv) => {
+            if (inv.tanggal_lunas && String(inv.tanggal_lunas).trim() !== "")
+              return;
+            if (!inv.due_date || String(inv.due_date).trim() === "") return;
+
+            const dueYmd = formatDate(inv.due_date);
+            if (!dueYmd || dueYmd === "-") return;
+            const [y, m, d] = dueYmd.split("-").map((x) => parseInt(x, 10));
+            const dueLocal = new Date(y, m - 1, d);
+            const diffDays = Math.round((dueLocal - todayMid) / MS_PER_DAY);
+
+            // include upcoming up to 31 hari, also include overdue (diffDays < 0)
+            if (diffDays <= 31) {
+              // push to overall todo list
+              todoCandidates.push({
+                invoice: inv,
+                vendorName:
+                  vendorMap[String(inv.vendor_id)] || "Vendor " + inv.vendor_id,
+                dueLocal,
+                diffDays,
+              });
+            }
+
+            // also aggregate for cards
+            if (diffDays >= buckets.red.min && diffDays <= buckets.red.max) {
+              buckets.red.invoices.push(inv);
+              buckets.red.vendors.add(String(inv.vendor_id));
+            } else if (
+              diffDays >= buckets.yellow.min &&
+              diffDays <= buckets.yellow.max
+            ) {
+              buckets.yellow.invoices.push(inv);
+              buckets.yellow.vendors.add(String(inv.vendor_id));
+            } else if (
+              diffDays >= buckets.blue.min &&
+              diffDays <= buckets.blue.max
+            ) {
+              buckets.blue.invoices.push(inv);
+              buckets.blue.vendors.add(String(inv.vendor_id));
+            } else if (
+              diffDays >= buckets.green.min &&
+              diffDays <= buckets.green.max
+            ) {
+              buckets.green.invoices.push(inv);
+              buckets.green.vendors.add(String(inv.vendor_id));
+            }
+          });
+
+          // render cards
+          function renderCard(prefix, bucket) {
+            document.getElementById(
+              `${prefix}-count`
+            ).innerHTML = `${bucket.invoices.length} <small>Invoice</small>`;
+            document.getElementById(
+              `${prefix}-vendors`
+            ).textContent = `Dari ${bucket.vendors.size} Vendor`;
+          }
+          renderCard("card-red", buckets.red);
+          renderCard("card-yellow", buckets.yellow);
+          renderCard("card-blue", buckets.blue);
+          renderCard("card-green", buckets.green);
+
+          // Prepare todoCandidates sorted by dueLocal ascending (terdekat paling atas)
+          todoCandidates.sort((a, b) => a.dueLocal - b.dueLocal);
+
+          // render list with pagination (10 per page)
+          renderInvoiceList(todoCandidates, 1, 10);
+        } catch (err) {
+          console.error("Gagal load dashboard/list:", err);
+        } finally {
+          setLoading(false);
+        }
+      }
+
+      // util: map diffDays -> badge {text, class}
+      function badgeForDiff(diffDays) {
+        if (diffDays < 0) {
+          return {
+            text: `${Math.abs(diffDays)} hari lalu`,
+            cls: "badge bg-secondary todo-badge",
+          };
+        }
+        if (diffDays === 0) {
+          return { text: `Hari ini`, cls: "badge badge-danger todo-badge" };
+        }
+        if (diffDays >= 1 && diffDays <= 3) {
+          return {
+            text: `${diffDays} hari lagi`,
+            cls: "badge badge-danger todo-badge",
+          };
+        }
+        if (diffDays >= 4 && diffDays <= 7) {
+          return {
+            text: `${diffDays} hari lagi`,
+            cls: "badge badge-warning todo-badge",
+          };
+        }
+        if (diffDays >= 8 && diffDays <= 14) {
+          return {
+            text: `${diffDays} hari lagi`,
+            cls: "badge badge-info todo-badge",
+          };
+        }
+        if (diffDays >= 15 && diffDays <= 31) {
+          return {
+            text: `${diffDays} hari lagi`,
+            cls: "badge badge-success todo-badge",
+          };
+        }
+        // fallback
+        return {
+          text: `${diffDays} hari lagi`,
+          cls: "badge badge-secondary todo-badge",
+        };
+      }
+
+      // Render invoice list (array of {invoice, vendorName, dueLocal, diffDays})
+      function renderInvoiceList(items, page = 1, pageSize = 10) {
+        const total = items.length;
+        const totalPages = Math.max(1, Math.ceil(total / pageSize));
+        const current = Math.min(Math.max(1, page), totalPages);
+        const start = (current - 1) * pageSize;
+        const end = start + pageSize;
+        const pageItems = items.slice(start, end);
+
+        const ul = document.getElementById("invoiceList");
+        ul.innerHTML = "";
+
+        pageItems.forEach((it) => {
+          const inv = it.invoice;
+          const vendor = it.vendorName;
+          const noInv = inv.no_inv || inv.id;
+          const totalInv = Number(inv.total_inv) || 0;
+          const dueYmd = formatDate(inv.due_date);
+          const dueDisp = ymdToDmy(dueYmd);
+          const badge = badgeForDiff(it.diffDays);
+
+          const li = document.createElement("li");
+          li.className =
+            "invoice-row d-flex align-items-center justify-content-between";
+          li.style.padding = ".65rem .75rem";
+          li.style.borderBottom = "1px solid #f4f6f9";
+          li.innerHTML = `
+            <div>
+              <div style="font-weight:600">${vendor} - ${noInv}</div>
+              <div class="meta">${new Intl.NumberFormat("id-ID").format(
+                totalInv
+              )} • ${dueDisp}</div>
+            </div>
+            <div class="text-right">
+              <div style="margin-bottom:6px;"><span class="${badge.cls}">${
+            badge.text
+          }</span></div>
+          `;
+          ul.appendChild(li);
+        });
+
+        // render pagination controls (top & bottom)
+        renderPagination("invoice-pagination", totalPages, current);
+        renderPagination("invoice-pagination-top", totalPages, current);
+
+        // render summary
+        const summary = document.getElementById("invoice-summary");
+        summary.textContent = `Menampilkan ${Math.min(
+          total,
+          start + 1
+        )}-${Math.min(total, end)} dari ${total} invoice`;
+      }
+
+      // render pagination by id
+      function renderPagination(containerId, totalPages, currentPage) {
+        const cont = document.getElementById(containerId);
+        if (!cont) return;
+        cont.innerHTML = "";
+
+        const createPageItem = (
+          label,
+          page,
+          disabled = false,
+          active = false
+        ) => {
+          const li = document.createElement("li");
+          li.className =
+            "page-item" +
+            (disabled ? " disabled" : "") +
+            (active ? " active" : "");
+          const a = document.createElement("a");
+          a.className = "page-link";
+          a.href = "#";
+          a.textContent = label;
+          a.dataset.page = page;
+          li.appendChild(a);
+          return li;
+        };
+
+        // prev
+        cont.appendChild(
+          createPageItem("«", Math.max(1, currentPage - 1), currentPage === 1)
+        );
+        // page numbers (show up to 7 with ellipsis if many)
+        const maxButtons = 7;
+        let start = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+        let end = Math.min(totalPages, start + maxButtons - 1);
+        if (end - start < maxButtons - 1)
+          start = Math.max(1, end - maxButtons + 1);
+
+        if (start > 1) {
+          cont.appendChild(createPageItem("1", 1, false, currentPage === 1));
+          if (start > 2) {
+            const li = document.createElement("li");
+            li.className = "page-item disabled";
+            const span = document.createElement("span");
+            span.className = "page-link";
+            span.textContent = "...";
+            li.appendChild(span);
+            cont.appendChild(li);
+          }
+        }
+
+        for (let p = start; p <= end; p++) {
+          cont.appendChild(
+            createPageItem(String(p), p, false, p === currentPage)
+          );
+        }
+
+        if (end < totalPages) {
+          if (end < totalPages - 1) {
+            const li = document.createElement("li");
+            li.className = "page-item disabled";
+            const span = document.createElement("span");
+            span.className = "page-link";
+            span.textContent = "...";
+            li.appendChild(span);
+            cont.appendChild(li);
+          }
+          cont.appendChild(
+            createPageItem(
+              String(totalPages),
+              totalPages,
+              false,
+              currentPage === totalPages
+            )
+          );
+        }
+
+        // next
+        cont.appendChild(
+          createPageItem(
+            "»",
+            Math.min(totalPages, currentPage + 1),
+            currentPage === totalPages
+          )
+        );
+
+        // attach click handlers (delegation)
+        Array.from(cont.querySelectorAll("a.page-link")).forEach((a) => {
+          a.addEventListener("click", (e) => {
+            e.preventDefault();
+            const p = parseInt(a.dataset.page, 10) || 1;
+            // read items from current candidate list stored on window (cheap caching)
+            if (window._dashboardTodoCandidates) {
+              renderInvoiceList(window._dashboardTodoCandidates, p, 10);
+            }
+            // scroll to top of card for UX
+            window.scrollTo({
+              top: document.querySelector(".card").offsetTop - 80,
+              behavior: "smooth",
+            });
+          });
+        });
+      }
+
+      // On load
+      document.addEventListener("DOMContentLoaded", async () => {
+        // set sidebar active
+        document
+          .querySelectorAll(".nav-link")
+          .forEach((a) => a.classList.remove("active"));
+        const el = document.getElementById("nav-dashboard");
+        if (el) el.classList.add("active");
+
+        // load dashboard & list
+        // store candidate list globally for pagination handler
+        setLoading(true);
+        try {
+          const invoicesRes = await fetch(
+            `${API_URL}?table=invoices&action=read&_ts=${Date.now()}`
+          );
+          const vendorsRes = await fetch(
+            `${API_URL}?table=vendors&action=read&_ts=${Date.now()}`
+          );
+          const invoices = await invoicesRes.json();
+          const vendors = await vendorsRes.json();
+          const vendorMap = {};
+          vendors.forEach(
+            (v) => (vendorMap[String(v.id)] = v.nama || "Vendor " + v.id)
+          );
+
+          // prepare candidates same as in loadDashboardAndList (we do it here to set window._dashboardTodoCandidates for pagination)
+          const today = new Date();
+          const todayMid = new Date(
+            today.getFullYear(),
+            today.getMonth(),
+            today.getDate()
+          );
+          const MS_PER_DAY = 24 * 60 * 60 * 1000;
+          const todoCandidates = [];
+          const buckets = {
+            red: { min: 0, max: 3, invoices: [], vendors: new Set() },
+            yellow: { min: 4, max: 7, invoices: [], vendors: new Set() },
+            blue: { min: 8, max: 14, invoices: [], vendors: new Set() },
+            green: { min: 15, max: 31, invoices: [], vendors: new Set() },
+          };
+
+          invoices.forEach((inv) => {
+            if (inv.tanggal_lunas && String(inv.tanggal_lunas).trim() !== "")
+              return;
+            if (!inv.due_date || String(inv.due_date).trim() === "") return;
+            const dueYmd = formatDate(inv.due_date);
+            if (!dueYmd || dueYmd === "-") return;
+            const [y, m, d] = dueYmd.split("-").map((x) => parseInt(x, 10));
+            const dueLocal = new Date(y, m - 1, d);
+            const diffDays = Math.round((dueLocal - todayMid) / MS_PER_DAY);
+
+            if (diffDays <= 31) {
+              todoCandidates.push({
+                invoice: inv,
+                vendorName:
+                  vendorMap[String(inv.vendor_id)] || "Vendor " + inv.vendor_id,
+                dueLocal,
+                diffDays,
+              });
+            }
+
+            if (diffDays >= buckets.red.min && diffDays <= buckets.red.max) {
+              buckets.red.invoices.push(inv);
+              buckets.red.vendors.add(String(inv.vendor_id));
+            } else if (
+              diffDays >= buckets.yellow.min &&
+              diffDays <= buckets.yellow.max
+            ) {
+              buckets.yellow.invoices.push(inv);
+              buckets.yellow.vendors.add(String(inv.vendor_id));
+            } else if (
+              diffDays >= buckets.blue.min &&
+              diffDays <= buckets.blue.max
+            ) {
+              buckets.blue.invoices.push(inv);
+              buckets.blue.vendors.add(String(inv.vendor_id));
+            } else if (
+              diffDays >= buckets.green.min &&
+              diffDays <= buckets.green.max
+            ) {
+              buckets.green.invoices.push(inv);
+              buckets.green.vendors.add(String(inv.vendor_id));
+            }
+          });
+
+          // render cards
+          function renderCard(prefix, bucket) {
+            document.getElementById(
+              `${prefix}-count`
+            ).innerHTML = `${bucket.invoices.length} <small>Invoice</small>`;
+            document.getElementById(
+              `${prefix}-vendors`
+            ).textContent = `Dari ${bucket.vendors.size} Vendor`;
+          }
+          renderCard("card-red", buckets.red);
+          renderCard("card-yellow", buckets.yellow);
+          renderCard("card-blue", buckets.blue);
+          renderCard("card-green", buckets.green);
+
+          // sort candidates & store globally then render page 1
+          todoCandidates.sort((a, b) => a.dueLocal - b.dueLocal);
+          window._dashboardTodoCandidates = todoCandidates;
+          renderInvoiceList(todoCandidates, 1, 10);
+        } catch (err) {
+          console.error("Inisialisasi dashboard gagal:", err);
+        } finally {
+          setLoading(false);
+        }
+      });
+    </script>
+  </body>
+</html>
