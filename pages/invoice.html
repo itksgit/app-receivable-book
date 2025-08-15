@@ -579,13 +579,16 @@
                             <th>Satuan</th>
                             <th>Harga (@)</th>
                             <th>Diskon (%)</th>
+                            <th>Nilai Diskon</th>
+                            <th>Pajak (%)</th>
+                            <th>Pajak</th>
                             <th>Subtotal</th>
                             <th>Aksi</th>
                           </tr>
                         </thead>
                         <tbody>
                           <tr>
-                            <td colspan="8" class="text-center">Memuat...</td>
+                            <td colspan="10" class="text-center">Memuat...</td>
                           </tr>
                         </tbody>
                       </table>
@@ -626,774 +629,8 @@
                       <span aria-hidden="true">&times;</span>
                     </button>
                   </div>
-                  <div class="modal-body">
-                    <form id="form-add-details">
-                      <table class="table table-bordered table-sm align-middle">
-                        <thead>
-                          <tr>
-                            <th>No</th>
-                            <th>Nama Barang</th>
-                            <th>Qty</th>
-                            <th>Satuan</th>
-                            <th>Harga (@)</th>
-                            <th>Diskon (%)</th>
-                            <th>Subtotal</th>
-                          </tr>
-                        </thead>
-                        <tbody>
-                          <!-- Baris 1 -->
-                          <tr>
-                            <td>1</td>
-                            <td>
-                              <input
-                                type="text"
-                                class="form-control"
-                                name="nama_barang_1"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="qty_1"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="text"
-                                class="form-control"
-                                name="unit_1"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="harga_1"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="diskon_1"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control subtotal"
-                                name="subtotal_1"
-                                step="0.01"
-                              />
-                            </td>
-                          </tr>
-                          <!-- Baris 2 -->
-                          <tr>
-                            <td>2</td>
-                            <td>
-                              <input
-                                type="text"
-                                class="form-control"
-                                name="nama_barang_2"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="qty_2"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="text"
-                                class="form-control"
-                                name="unit_2"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="harga_2"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="diskon_2"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control subtotal"
-                                name="subtotal_2"
-                                step="0.01"
-                              />
-                            </td>
-                          </tr>
-                          <!-- Baris 3 -->
-                          <tr>
-                            <td>3</td>
-                            <td>
-                              <input
-                                type="text"
-                                class="form-control"
-                                name="nama_barang_3"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="qty_3"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="text"
-                                class="form-control"
-                                name="unit_3"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="harga_3"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="diskon_3"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control subtotal"
-                                name="subtotal_3"
-                                step="0.01"
-                              />
-                            </td>
-                          </tr>
-                          <!-- Baris 4 -->
-                          <tr>
-                            <td>4</td>
-                            <td>
-                              <input
-                                type="text"
-                                class="form-control"
-                                name="nama_barang_4"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="qty_4"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="text"
-                                class="form-control"
-                                name="unit_4"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="harga_4"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="diskon_4"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control subtotal"
-                                name="subtotal_4"
-                                step="0.01"
-                              />
-                            </td>
-                          </tr>
-                          <!-- Baris 5 -->
-                          <tr>
-                            <td>5</td>
-                            <td>
-                              <input
-                                type="text"
-                                class="form-control"
-                                name="nama_barang_5"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="qty_5"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="text"
-                                class="form-control"
-                                name="unit_5"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="harga_5"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="diskon_5"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control subtotal"
-                                name="subtotal_5"
-                                step="0.01"
-                              />
-                            </td>
-                          </tr>
-                          <!-- Baris 6 -->
-                          <tr>
-                            <td>6</td>
-                            <td>
-                              <input
-                                type="text"
-                                class="form-control"
-                                name="nama_barang_6"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="qty_6"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="text"
-                                class="form-control"
-                                name="unit_6"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="harga_6"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="diskon_6"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control subtotal"
-                                name="subtotal_6"
-                                step="0.01"
-                              />
-                            </td>
-                          </tr>
-                          <!-- Baris 7 -->
-                          <tr>
-                            <td>7</td>
-                            <td>
-                              <input
-                                type="text"
-                                class="form-control"
-                                name="nama_barang_7"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="qty_7"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="text"
-                                class="form-control"
-                                name="unit_7"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="harga_7"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="diskon_7"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control subtotal"
-                                name="subtotal_7"
-                                step="0.01"
-                              />
-                            </td>
-                          </tr>
-                          <!-- Baris 8 -->
-                          <tr>
-                            <td>8</td>
-                            <td>
-                              <input
-                                type="text"
-                                class="form-control"
-                                name="nama_barang_8"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="qty_8"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="text"
-                                class="form-control"
-                                name="unit_8"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="harga_8"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="diskon_8"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control subtotal"
-                                name="subtotal_8"
-                                step="0.01"
-                              />
-                            </td>
-                          </tr>
-                          <!-- Baris 9 -->
-                          <tr>
-                            <td>9</td>
-                            <td>
-                              <input
-                                type="text"
-                                class="form-control"
-                                name="nama_barang_9"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="qty_9"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="text"
-                                class="form-control"
-                                name="unit_9"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="harga_9"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="diskon_9"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control subtotal"
-                                name="subtotal_9"
-                                step="0.01"
-                              />
-                            </td>
-                          </tr>
-                          <!-- Baris 10 -->
-                          <tr>
-                            <td>10</td>
-                            <td>
-                              <input
-                                type="text"
-                                class="form-control"
-                                name="nama_barang_10"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="qty_10"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="text"
-                                class="form-control"
-                                name="unit_10"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="harga_10"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="diskon_10"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control subtotal"
-                                name="subtotal_10"
-                                step="0.01"
-                              />
-                            </td>
-                          </tr>
-                          <!-- Baris 11 -->
-                          <tr>
-                            <td>11</td>
-                            <td>
-                              <input
-                                type="text"
-                                class="form-control"
-                                name="nama_barang_11"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="qty_11"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="text"
-                                class="form-control"
-                                name="unit_11"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="harga_11"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="diskon_11"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control subtotal"
-                                name="subtotal_11"
-                                step="0.01"
-                              />
-                            </td>
-                          </tr>
-                          <!-- Baris 12 -->
-                          <tr>
-                            <td>12</td>
-                            <td>
-                              <input
-                                type="text"
-                                class="form-control"
-                                name="nama_barang_12"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="qty_12"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="text"
-                                class="form-control"
-                                name="unit_12"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="harga_12"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="diskon_12"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control subtotal"
-                                name="subtotal_12"
-                                step="0.01"
-                              />
-                            </td>
-                          </tr>
-                          <!-- Baris 13 -->
-                          <tr>
-                            <td>13</td>
-                            <td>
-                              <input
-                                type="text"
-                                class="form-control"
-                                name="nama_barang_13"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="qty_13"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="text"
-                                class="form-control"
-                                name="unit_13"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="harga_13"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="diskon_13"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control subtotal"
-                                name="subtotal_13"
-                                step="0.01"
-                              />
-                            </td>
-                          </tr>
-                          <!-- Baris 14 -->
-                          <tr>
-                            <td>14</td>
-                            <td>
-                              <input
-                                type="text"
-                                class="form-control"
-                                name="nama_barang_14"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="qty_14"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="text"
-                                class="form-control"
-                                name="unit_14"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="harga_14"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="diskon_14"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control subtotal"
-                                name="subtotal_14"
-                                step="0.01"
-                              />
-                            </td>
-                          </tr>
-                          <!-- Baris 15 -->
-                          <tr>
-                            <td>15</td>
-                            <td>
-                              <input
-                                type="text"
-                                class="form-control"
-                                name="nama_barang_15"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="qty_15"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="text"
-                                class="form-control"
-                                name="unit_15"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="harga_15"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control"
-                                name="diskon_15"
-                                step="0.01"
-                              />
-                            </td>
-                            <td>
-                              <input
-                                type="number"
-                                class="form-control subtotal"
-                                name="subtotal_15"
-                                step="0.01"
-                              />
-                            </td>
-                          </tr>
-                        </tbody>
-                      </table>
-                    </form>
+                  <div class="modal-body" id="form-add-details-container">
+                    <!-- Table form akan dirender via JS -->
                   </div>
                   <div class="modal-footer">
                     <button
@@ -1414,6 +651,7 @@
                 </div>
               </div>
             </div>
+            <!-- MODAL EXTRA LARGE: Edit Detail -->
             <div
               class="modal fade"
               id="modal-edit-details"
@@ -1576,8 +814,8 @@
 
         // Tampilkan toastr untuk pending
         toastr.info(description + " (sedang diproses...)", "Proses", {
-          timeOut: 0,
-          extendedTimeOut: 0,
+          timeOut: 5000,
+          extendedTimeOut: 5000,
         });
 
         // Jalankan proses
@@ -1721,17 +959,53 @@
             return sumSubtotal !== parseFloat(totalInv || 0);
           }
 
-          const belumLunas = smartSortInvoices(
-            invoices.filter(
-              (inv) => !inv.tanggal_lunas || inv.tanggal_lunas.trim() === ""
-            )
-          );
+          // const belumLunas = smartSortInvoices(
+          //   invoices.filter(
+          //     (inv) => !inv.tanggal_lunas || inv.tanggal_lunas.trim() === ""
+          //   )
+          // );
 
-          const sudahLunas = smartSortInvoices(
-            invoices.filter(
-              (inv) => inv.tanggal_lunas && inv.tanggal_lunas.trim() !== ""
-            )
-          );
+          // const sudahLunas = smartSortInvoices(
+          //   invoices.filter(
+          //     (inv) => inv.tanggal_lunas && inv.tanggal_lunas.trim() !== ""
+          //   )
+          // );
+
+          // safe sort descending by id (handles numeric-string ids too)
+          function sortByIdDesc(arr) {
+            return [...arr].sort((a, b) => {
+              const ai = parseInt(a.id, 10);
+              const bi = parseInt(b.id, 10);
+
+              if (!isNaN(ai) && !isNaN(bi)) {
+                return bi - ai; // numeric compare
+              }
+
+              // fallback: localeCompare with numeric option (handles "10" > "2" correctly)
+              const sa = (a.id ?? "").toString();
+              const sb = (b.id ?? "").toString();
+              return sb.localeCompare(sa, undefined, {
+                numeric: true,
+                sensitivity: "base",
+              });
+            });
+          }
+
+          // helper: apakah invoice sudah lunas (ada tanggal_lunas yang tidak kosong)
+          function isPaid(inv) {
+            return (
+              inv.tanggal_lunas != null &&
+              String(inv.tanggal_lunas).trim() !== ""
+            );
+          }
+
+          // apply
+          const sortedInvoices = sortByIdDesc(invoices);
+
+          // pisah
+          const belumLunas = sortedInvoices.filter((inv) => !isPaid(inv));
+          const sudahLunas = sortedInvoices.filter((inv) => isPaid(inv));
+
           let noBelum = 1;
           let noSudah = 1;
           const belumLunasRows = [];
@@ -2366,17 +1640,34 @@
 
         if (detailsForInvoice.length === 0) {
           $tbody.append(
-            '<tr><td colspan="8" class="text-center text-muted">Tidak ada detail untuk invoice ini</td></tr>'
+            '<tr><td colspan="10" class="text-center text-muted">Tidak ada detail untuk invoice ini</td></tr>'
           );
         } else {
           detailsForInvoice.forEach((det, idx) => {
             const harga = parseFloat(det.price_per) || 0;
             const qty = parseFloat(det.qty) || 0;
             const diskon = parseFloat(det.discount) || 0;
+            const diskonVal = parseFloat(det.discount_val) || 0; // nilai diskon
+            const tax_pct = parseFloat(det.tax_pct) || 0;
+            const tax_val = parseFloat(det.tax_val) || 0; // pajak
             const subtotal = parseFloat(det.subtotal) || 0;
 
             sumQty += qty;
             sumSubtotal += subtotal;
+
+            // format untuk angka desimal / rupiah
+            const fmtHarga = harga.toLocaleString("id-ID");
+            const fmtDiskonVal = diskonVal.toLocaleString("id-ID");
+            const fmtSubtotal = subtotal.toLocaleString("id-ID");
+            const fmtTaxVal = tax_val.toLocaleString("id-ID");
+
+            // diskon (%) tampilkan koma jika ada desimal
+            const fmtDiskonPct =
+              diskon % 1 === 0 ? diskon : diskon.toString().replace(".", ",");
+
+            // pajak (%) tampilkan koma jika ada desimal
+            const fmtTaxPct =
+              diskon % 1 === 0 ? tax_pct : tax_pct.toString().replace(".", ",");
 
             $tbody.append(`
               <tr>
@@ -2384,13 +1675,12 @@
                 <td>${det.nama_barang || "-"}</td>
                 <td>${qty}</td>
                 <td>${det.unit || "-"}</td>
-                <td>${harga.toLocaleString("id-ID")}</td>
-                <td>${
-                  diskon % 1 === 0
-                    ? diskon
-                    : diskon.toString().replace(".", ",")
-                }</td>
-                <td>${subtotal.toLocaleString("id-ID")}</td>
+                <td>${fmtHarga}</td>
+                <td>${fmtDiskonPct}</td>
+                <td>${fmtDiskonVal}</td>
+                <td>${fmtTaxPct}</td>
+                <td>${fmtTaxVal}</td>
+                <td class="text-right">${fmtSubtotal}</td>
                 <td class="text-center">
                   <button class="btn btn-sm btn-danger btn-delete-detail" 
                     data-id="${det.id}" 
@@ -2402,13 +1692,13 @@
             `);
           });
 
-          // Baris total di bawah
+          // Baris total di bawah (total qty + total subtotal)
           $tbody.append(`
             <tr class="font-weight-bold bg-light">
               <td colspan="2" class="text-right">TOTAL</td>
               <td>${sumQty}</td>
-              <td colspan="3"></td>
-              <td>${sumSubtotal.toLocaleString("id-ID")}</td>
+              <td colspan="6"></td>
+              <td class="text-right">${sumSubtotal.toLocaleString("id-ID")}</td>
               <td></td>
             </tr>
           `);
@@ -2465,65 +1755,257 @@
         });
       });
 
-      // Handler klik tombol Tambah Detail
+      // ===== UTILS =====
+      function parseNumber(v) {
+        const n = parseFloat(v);
+        return isNaN(n) ? 0 : n;
+      }
+
+      function calcValue({ base, pctRaw, pct, valInput }) {
+        const isManual = valInput.attr("data-manual") === "1";
+
+        if (!isManual) {
+          if (pctRaw !== "") {
+            const calcVal = base * (pct / 100);
+            valInput.val(
+              (Math.round((calcVal + Number.EPSILON) * 100) / 100).toFixed(2)
+            );
+          }
+          // Kalau persen kosong → biarkan nilai lama
+        }
+        return parseNumber(valInput.val());
+      }
+
+      // ===== recalcRow (robust untuk <tr> di Add dan .detail-row di Edit) =====
+      function recalcRow($row) {
+        const qty = parseNumber($row.find(".qty").val());
+        const price = parseNumber($row.find(".price").val());
+        const baseAmount = qty * price;
+
+        // DISKON
+        const discountVal = calcValue({
+          base: baseAmount,
+          pctRaw: $row.find(".discount_pct").val(),
+          pct: parseNumber($row.find(".discount_pct").val()),
+          valInput: $row.find(".discount_val"),
+        });
+
+        const beforeTax = baseAmount - discountVal;
+
+        // PAJAK
+        const taxVal = calcValue({
+          base: beforeTax,
+          pctRaw: $row.find(".tax_pct").val(),
+          pct: parseNumber($row.find(".tax_pct").val()),
+          valInput: $row.find(".tax_val"),
+        });
+
+        // SUBTOTAL
+        const subtotal = beforeTax + taxVal;
+        $row
+          .find(".subtotal")
+          .val(
+            (Math.round((subtotal + Number.EPSILON) * 100) / 100).toFixed(2)
+          );
+      }
+
+      function renderDetailRows($container, details, isEdit = false) {
+        $container.empty().append(`
+    <div class="table-responsive">
+      <table class="table table-bordered table-sm align-middle">
+        <thead>
+          <tr>
+            <th style="width:40px" class="text-center">No</th>
+            <th>Nama Barang</th>
+            <th style="width:80px">Qty</th>
+            <th style="width:90px">Satuan</th>
+            <th style="width:140px">Harga (@)</th>
+            <th style="width:100px">Diskon (%)</th>
+            <th style="width:140px">Nilai Diskon</th>
+            <th style="width:100px">Pajak (%)</th>
+            <th style="width:120px">Nilai Pajak</th>
+            <th style="width:140px">Subtotal</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  `);
+
+        const $tbody = $container.find("tbody");
+
+        details.forEach((det, idx) => {
+          const rowIdx = idx + 1; // <-- GUNAKAN 1-based index
+          const discount_val =
+            det.discount_val || det.discount_val === 0 ? det.discount_val : "";
+          const tax_val = det.tax_val || "";
+          const tax_pct = det.tax_pct || det.tax_pct === 0 ? det.tax_pct : "";
+
+          $tbody.append(`
+      <tr data-row-index="${rowIdx}">
+        <td class="text-center align-middle">
+          ${rowIdx}
+          ${
+            isEdit
+              ? `<input type="hidden" name="detail_id_${rowIdx}" value="${
+                  det.id || ""
+                }">`
+              : ""
+          }
+        </td>
+
+        <td><input type="text" class="form-control" name="nama_barang_${rowIdx}" value="${
+            det.nama_barang || ""
+          }"></td>
+        <td><input type="number" step="0.01" class="form-control qty" name="qty_${rowIdx}" value="${
+            det.qty || ""
+          }"></td>
+        <td><input type="text" class="form-control" name="unit_${rowIdx}" value="${
+            det.unit || ""
+          }"></td>
+        <td><input type="number" step="0.01" class="form-control price" name="price_per_${rowIdx}" value="${
+            det.price_per || ""
+          }"></td>
+        <td><input type="number" step="0.01" class="form-control discount_pct" name="discount_pct_${rowIdx}" value="${
+            det.discount || ""
+          }"></td>
+        <td><input type="number" step="0.01" class="form-control discount_val" name="discount_val_${rowIdx}" value="${discount_val}"></td>
+        <td><input type="number" step="0.01" class="form-control tax_pct" name="tax_pct_${rowIdx}" value="${tax_pct}"></td>
+        <td><input type="number" step="0.01" class="form-control tax_val" name="tax_val_${rowIdx}" value="${tax_val}"></td>
+        <td><input type="number" step="0.01" class="form-control subtotal" name="subtotal_${rowIdx}" value="${
+            det.subtotal || ""
+          }"></td>
+      </tr>
+    `);
+        });
+      }
+
       $(document).on("click", ".btn-add-details", function () {
         const invoiceId = $(this).data("id");
-
-        // Simpan invoiceId ke tombol save
         $("#btn-save-details").data("invoice-id", invoiceId);
 
-        // Reset semua input form
-        $("#form-add-details").find("input").val("");
+        // Misalnya default 5 baris kosong
+        const emptyDetails = Array.from({ length: 15 }, () => ({
+          nama_barang: "",
+          qty: "",
+          unit: "",
+          price_per: "",
+          discount: "",
+          discount_val: "",
+          tax_pct: "",
+          tax_val: "",
+          subtotal: "",
+        }));
 
-        // Tampilkan modal
+        renderDetailRows($("#form-add-details-container"), emptyDetails, false);
+
         $("#modal-add-details").modal("show");
       });
 
-      // Hitung subtotal otomatis (Qty * Harga * (1 - Diskon%))
-      $(document).on("input", "#form-add-details input", function () {
-        const $row = $(this).closest("tr");
-        const qty = parseFloat($row.find('input[name^="qty"]').val()) || 0;
-        const price = parseFloat($row.find('input[name^="harga"]').val()) || 0;
-        const discount =
-          parseFloat($row.find('input[name^="diskon"]').val()) || 0;
+      $(document).on("click", ".btn-edit-details", function () {
+        const invoiceId = $(this).data("id");
+        const detailsForInvoice = cachedDetails.filter(
+          (d) => d.invoice_id == invoiceId
+        );
 
-        const subtotal = qty * price * (1 - discount / 100);
-        $row.find('input[name^="subtotal"]').val(subtotal.toFixed(2));
+        $("#btn-save-edit-details").data("invoice-id", invoiceId);
+
+        renderDetailRows($("#edit-details-container"), detailsForInvoice, true);
+
+        $("#modal-edit-details").modal("show");
       });
 
+      $(document).on("input change", ".table input", function () {
+        const $row = $(this).closest("tr");
+
+        // Diskon manual
+        if ($(this).hasClass("discount_val")) {
+          $(this).attr("data-manual", "1");
+        }
+        if ($(this).hasClass("discount_pct")) {
+          $row.find(".discount_val").removeAttr("data-manual");
+        }
+
+        // Pajak manual
+        if ($(this).hasClass("tax_val")) {
+          $(this).attr("data-manual", "1");
+        }
+        if ($(this).hasClass("tax_pct")) {
+          $row.find(".tax_val").removeAttr("data-manual");
+        }
+
+        recalcRow($row);
+      });
+
+      // Helper: ambil value field dari $row dengan beberapa prefix kemungkinan
+      function getRowVal($row, prefixes) {
+        for (let p of prefixes) {
+          const $f = $row.find(`[name^="${p}"]`);
+          if ($f.length) return $f.val();
+        }
+        return "";
+      }
+
+      // Handler Save Add Details (legacy indexed mode only; robust & fixed id assignment)
       $("#btn-save-details").on("click", function () {
         const invoiceId = $(this).data("invoice-id");
-
-        // Tutup modal langsung
         $("#modal-add-details").modal("hide");
 
         addActionToQueue("Menambahkan detail", async () => {
           let createRecords = [];
 
-          for (let i = 1; i <= 15; i++) {
-            const nama_barang = $(`[name="nama_barang_${i}"]`).val().trim();
-            const qty = $(`[name="qty_${i}"]`).val();
-            const unit = $(`[name="unit_${i}"]`).val();
-            const price_per = $(`[name="harga_${i}"]`).val();
-            const discount = $(`[name="diskon_${i}"]`).val();
-            const subtotal = $(`[name="subtotal_${i}"]`).val();
-
-            // Lewati baris kosong
-            if (!nama_barang && !qty && !price_per) continue;
-
-            // Dapatkan ID baru detail (tetap 1 per 1 agar ID unik)
-            const idBaru = await getNextDetailId();
-
-            createRecords.push({
-              id: idBaru,
-              invoice_id: invoiceId,
-              nama_barang,
-              qty,
-              unit,
-              price_per,
-              discount,
-              subtotal,
+          // =================== build createRecords (legacy indexed) ===================
+          let maxIdx = 0;
+          $("#form-add-details, #form-add-details-container")
+            .find("input[name]")
+            .each(function () {
+              const nm = $(this).attr("name");
+              const m = nm && nm.match(/_(\d+)$/);
+              if (m) {
+                const idx = parseInt(m[1], 10);
+                if (idx > maxIdx) maxIdx = idx;
+              }
             });
+
+          if (maxIdx > 0) {
+            for (let i = 1; i <= maxIdx; i++) {
+              const nama_barang =
+                $(`[name="nama_barang_${i}"]`).val() ||
+                $(`[name="nama_barang_${i}"]`).text(); // fallback
+              const qty = $(`[name="qty_${i}"]`).val();
+              const unit = $(`[name="unit_${i}"]`).val();
+              const price_per =
+                $(`[name="price_per_${i}"]`).val() ||
+                $(`[name="harga_${i}"]`).val() ||
+                $(`[name="price_${i}"]`).val();
+              const discount =
+                $(`[name="discount_pct_${i}"]`).val() ||
+                $(`[name="diskon_${i}"]`).val() ||
+                "";
+              const discount_val = $(`[name="discount_val_${i}"]`).val() || "";
+              const tax_pct = $(`[name="tax_pct_${i}"]`).val() || "";
+              const tax_val =
+                $(`[name="tax_val_${i}"]`).val() ||
+                $(`[name="tax_${i}"]`).val() ||
+                "";
+              const subtotal = $(`[name="subtotal_${i}"]`).val() || "";
+
+              if (!nama_barang && !qty && !price_per) continue; // skip kosong
+
+              createRecords.push({
+                id: null,
+                invoice_id: invoiceId,
+                nama_barang: nama_barang || "",
+                qty: qty || "",
+                unit: unit || "",
+                price_per: price_per || "",
+                discount: discount || "",
+                discount_val: discount_val || "",
+                tax_pct: tax_pct || "",
+                tax_val: tax_val || "",
+                subtotal: subtotal || "",
+              });
+            }
           }
 
           if (createRecords.length === 0) {
@@ -2534,15 +2016,36 @@
             return;
           }
 
+          // =================== assign ids once (increment locally) ===================
+          let startIdRaw;
+          try {
+            startIdRaw = await getNextDetailId(); // ambil sekali saja
+          } catch (err) {
+            console.warn("getNextDetailId() gagal:", err);
+            startIdRaw = null;
+          }
+
+          let startId = parseInt(startIdRaw, 10);
+          if (!Number.isFinite(startId)) {
+            // fallback: gunakan timestamp supaya unik
+            startId = Date.now();
+            console.warn("Fallback startId dipakai:", startId);
+          }
+
+          for (let i = 0; i < createRecords.length; i++) {
+            createRecords[i].id = startId + i;
+          }
+
           try {
             const url = `${API_URL}?table=details&action=bulk_create&records=${encodeURIComponent(
               JSON.stringify(createRecords)
             )}`;
+
             await fetch(url, { method: "POST" });
 
-            // 🔍 Verifikasi manual sekali saja
             const allDetails = await fetchData("details");
             cachedDetails = allDetails;
+
             let anySaved = createRecords.some((r) =>
               allDetails.find((d) => d.id == r.id)
             );
@@ -2553,10 +2056,7 @@
                 title: "Detail berhasil ditambahkan",
               });
             } else {
-              Toast.fire({
-                icon: "error",
-                title: "Gagal menambahkan detail",
-              });
+              Toast.fire({ icon: "error", title: "Gagal menambahkan detail" });
             }
           } catch (err) {
             console.error("Gagal bulk create:", err);
@@ -2565,94 +2065,7 @@
         });
       });
 
-      // Handler klik tombol Edit Detail
-      $(document).on("click", ".btn-edit-details", function () {
-        const invoiceId = $(this).data("id");
-
-        // Ambil semua detail dari cache
-        const detailsForInvoice = cachedDetails.filter(
-          (d) => d.invoice_id == invoiceId
-        );
-
-        // Simpan invoiceId ke tombol save
-        $("#btn-save-edit-details").data("invoice-id", invoiceId);
-
-        // Render form rows
-        const $container = $("#edit-details-container");
-        // Bersihkan container
-        $container.empty();
-
-        // Tambahkan header
-        $container.append(`
-        <div class="row fw-bold border-bottom pb-2 mb-2">
-          <div class="col-md-1 text-center">No</div>
-          <div class="col-md-3">Nama Barang</div>
-          <div class="col-md-1">Qty</div>
-          <div class="col-md-1">Satuan</div>
-          <div class="col-md-2">Harga (@)</div>
-          <div class="col-md-1">Diskon (%)</div>
-          <div class="col-md-2">Subtotal</div>
-        </div>
-      `);
-
-        detailsForInvoice.forEach((det, idx) => {
-          $container.append(`
-          <div class="border p-2 mb-2">
-            <input type="hidden" name="detail_id_${idx}" value="${det.id}">
-            <div class="row">
-              <div class="col-md-1 text-center">
-                <strong>${idx + 1}</strong>
-              </div>
-              <div class="col-md-3">
-                <input type="text" name="nama_barang_${idx}" class="form-control" value="${
-            det.nama_barang || ""
-          }" placeholder="Nama Barang">
-              </div>
-              <div class="col-md-1">
-                <input type="number" step="0.01" name="qty_${idx}" class="form-control qty" value="${
-            det.qty || ""
-          }" placeholder="Qty">
-              </div>
-              <div class="col-md-1">
-                <input type="text" name="unit_${idx}" class="form-control" value="${
-            det.unit || ""
-          }" placeholder="Unit">
-              </div>
-              <div class="col-md-2">
-                <input type="number" step="0.01" name="price_per_${idx}" class="form-control price_per" value="${
-            det.price_per || ""
-          }" placeholder="Harga @">
-              </div>
-              <div class="col-md-1">
-                <input type="number" step="0.01" name="discount_${idx}" class="form-control discount" value="${
-            det.discount || ""
-          }" placeholder="Diskon %">
-              </div>
-              <div class="col-md-2">
-                <input type="number" step="0.01" name="subtotal_${idx}" class="form-control subtotal" value="${
-            det.subtotal || ""
-          }" placeholder="Subtotal">
-              </div>
-            </div>
-          </div>
-        `);
-        });
-
-        // Hitung subtotal otomatis saat user edit qty/price/discount
-        $container.on("input", ".qty, .price_per, .discount", function () {
-          const $row = $(this).closest(".border");
-          const qty = parseFloat($row.find(".qty").val()) || 0;
-          const price = parseFloat($row.find(".price_per").val()) || 0;
-          const discount = parseFloat($row.find(".discount").val()) || 0;
-          const subtotal = qty * price * (1 - discount / 100);
-          $row.find(".subtotal").val(subtotal.toFixed(2));
-        });
-
-        // Tampilkan modal
-        $("#modal-edit-details").modal("show");
-      });
-
-      // Handler Submit Edit Detail queue (verifikasi 1 kali di akhir)
+      // Simpan Edit Detail (bulk_update)
       $("#btn-save-edit-details").on("click", function () {
         const invoiceId = $(this).data("invoice-id");
         const $container = $("#edit-details-container");
@@ -2660,34 +2073,38 @@
         $("#modal-edit-details").modal("hide");
 
         addActionToQueue("Mengedit detail", async () => {
-          const rows = $container.find(".border");
           let updateRecords = [];
 
-          for (let i = 0; i < rows.length; i++) {
-            const detailId = $container.find(`[name="detail_id_${i}"]`).val();
-            const nama_barang = $container
-              .find(`[name="nama_barang_${i}"]`)
-              .val()
-              .trim();
-            const qty = $container.find(`[name="qty_${i}"]`).val();
-            const unit = $container.find(`[name="unit_${i}"]`).val();
-            const price_per = $container.find(`[name="price_per_${i}"]`).val();
-            const discount = $container.find(`[name="discount_${i}"]`).val();
-            const subtotal = $container.find(`[name="subtotal_${i}"]`).val();
+          $container.find("tbody tr").each(function (i) {
+            const $row = $(this);
 
-            if (!nama_barang && !qty && !price_per) continue;
+            const detailId = $row.find('[name^="detail_id"]').val();
+            const nama_barang = $row.find('[name^="nama_barang"]').val();
+            const qty = $row.find('[name^="qty"]').val();
+            const unit = $row.find('[name^="unit"]').val();
+            const price_per = $row.find('[name^="price_per"]').val();
+            const discount = $row.find('[name^="discount_pct"]').val();
+            const discount_val = $row.find('[name^="discount_val"]').val();
+            const tax_pct = $row.find('[name^="tax_pct"]').val();
+            const tax_val = $row.find('[name^="tax_val"]').val();
+            const subtotal = $row.find('[name^="subtotal"]').val();
+
+            if (!nama_barang && !qty && !price_per) return;
 
             updateRecords.push({
               id: detailId,
               invoice_id: invoiceId,
-              nama_barang,
-              qty,
-              unit,
-              price_per,
-              discount,
-              subtotal,
+              nama_barang: nama_barang || "",
+              qty: qty || "",
+              unit: unit || "",
+              price_per: price_per || "",
+              discount: discount || "",
+              discount_val: discount_val || "",
+              tax_pct: tax_pct || "",
+              tax_val: tax_val || "",
+              subtotal: subtotal || "",
             });
-          }
+          });
 
           if (updateRecords.length === 0) {
             Toast.fire({
