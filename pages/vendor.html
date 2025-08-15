@@ -496,8 +496,8 @@
 
         // Tampilkan toastr untuk pending (tidak auto-close)
         toastr.info(description + " (sedang diproses...)", "Proses", {
-          timeOut: 0,
-          extendedTimeOut: 0,
+          timeOut: 5000,
+          extendedTimeOut: 5000,
         });
 
         // Jalankan proses async
@@ -786,16 +786,39 @@
           const tbody = document.querySelector("#vendorTable tbody");
           tbody.innerHTML = "";
 
-          vendors.forEach((v) => {
+          function sortByIdDesc(arr) {
+            return [...arr].sort((a, b) => {
+              const ai = parseInt(a.id, 10);
+              const bi = parseInt(b.id, 10);
+
+              if (!isNaN(ai) && !isNaN(bi)) {
+                return bi - ai; // numeric compare
+              }
+
+              // fallback: localeCompare with numeric option (handles "10" > "2" correctly)
+              const sa = (a.id ?? "").toString();
+              const sb = (b.id ?? "").toString();
+              return sb.localeCompare(sa, undefined, {
+                numeric: true,
+                sensitivity: "base",
+              });
+            });
+          }
+
+          const sortedVendors = sortByIdDesc(vendors);
+
+          sortedVendors.forEach((v, idx) => {
             const tr = document.createElement("tr");
             tr.innerHTML = `
-              <td>${v.id}</td>
+              <td>${idx + 1}</td>
               <td>${v.nama}</td>
               <td>
                 <button class="btn btn-sm btn-info btn-edit" data-id="${v.id}">
                   <i class="fas fa-edit"></i>
                 </button>
-                <button class="btn btn-sm btn-danger btn-delete" data-id="${v.id}">
+                <button class="btn btn-sm btn-danger btn-delete" data-id="${
+                  v.id
+                }">
                   <i class="fas fa-trash-alt"></i>
                 </button>
               </td>
@@ -865,19 +888,21 @@
 
           // Pasang listener untuk tombol aksi (edit / delete)
           // Gunakan event delegation untuk mencegah double-binding
-          document
-            .querySelector("#vendorTable tbody")
-            .querySelectorAll(".btn-edit")
-            .forEach((btn) => {
-              btn.addEventListener("click", (e) => {
-                const id = e.currentTarget.dataset.id;
+          const vendorTbody = document.querySelector("#vendorTable tbody");
+          if (vendorTbody) {
+            vendorTbody.addEventListener("click", function (e) {
+              const btn = e.target.closest(".btn-edit, .btn-delete");
+              if (!btn) return;
+
+              const id = btn.dataset.id;
+              if (btn.classList.contains("btn-edit")) {
                 const vendor = cachedVendors.find(
                   (v) => String(v.id) === String(id)
                 );
                 if (vendor) {
                   openEditVendorModal(vendor);
                 } else {
-                  // fallback kecil: kalau cache belum siap, ambil dari server (jarang terjadi)
+                  // fallback: ambil dari server jika cache belum siap
                   (async () => {
                     try {
                       const all = await fetchData("vendors");
@@ -888,18 +913,11 @@
                     }
                   })();
                 }
-              });
-            });
-
-          document
-            .querySelector("#vendorTable tbody")
-            .querySelectorAll(".btn-delete")
-            .forEach((btn) => {
-              btn.addEventListener("click", async (e) => {
-                const id = e.currentTarget.dataset.id;
+              } else if (btn.classList.contains("btn-delete")) {
                 handleDeleteVendor(id);
-              });
+              }
             });
+          }
         } catch (err) {
           console.error("Error load vendors:", err);
           toastr.error("Gagal memuat data vendor", "Error");
