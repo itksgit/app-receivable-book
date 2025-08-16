@@ -956,7 +956,7 @@
               (sum, det) => sum + (parseFloat(det.subtotal) || 0),
               0
             );
-            return sumSubtotal !== parseFloat(totalInv || 0);
+            return Math.round(sumSubtotal) !== parseFloat(totalInv || 0);
           }
 
           // const belumLunas = smartSortInvoices(
