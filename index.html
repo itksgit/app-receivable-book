@@ -457,7 +457,7 @@
           todoCandidates.sort((a, b) => a.dueLocal - b.dueLocal);
 
           // render list with pagination (10 per page)
-          renderInvoiceList(todoCandidates, 1, 10);
+          renderInvoiceList(todoCandidates);
         } catch (err) {
           console.error("Gagal load dashboard/list:", err);
         } finally {
@@ -508,18 +508,11 @@
       }
 
       // Render invoice list (array of {invoice, vendorName, dueLocal, diffDays})
-      function renderInvoiceList(items, page = 1, pageSize = 10) {
-        const total = items.length;
-        const totalPages = Math.max(1, Math.ceil(total / pageSize));
-        const current = Math.min(Math.max(1, page), totalPages);
-        const start = (current - 1) * pageSize;
-        const end = start + pageSize;
-        const pageItems = items.slice(start, end);
-
+      function renderInvoiceList(items) {
         const ul = document.getElementById("invoiceList");
         ul.innerHTML = "";
 
-        pageItems.forEach((it) => {
+        items.forEach((it) => {
           const inv = it.invoice;
           const vendor = it.vendorName;
           const noInv = inv.no_inv || inv.id;
@@ -544,123 +537,16 @@
               <div style="margin-bottom:6px;"><span class="${badge.cls}">${
             badge.text
           }</span></div>
+            </div>
           `;
           ul.appendChild(li);
         });
 
-        // render pagination controls (top & bottom)
-        renderPagination("invoice-pagination", totalPages, current);
-        renderPagination("invoice-pagination-top", totalPages, current);
-
-        // render summary
-        const summary = document.getElementById("invoice-summary");
-        summary.textContent = `Menampilkan ${Math.min(
-          total,
-          start + 1
-        )}-${Math.min(total, end)} dari ${total} invoice`;
-      }
-
-      // render pagination by id
-      function renderPagination(containerId, totalPages, currentPage) {
-        const cont = document.getElementById(containerId);
-        if (!cont) return;
-        cont.innerHTML = "";
-
-        const createPageItem = (
-          label,
-          page,
-          disabled = false,
-          active = false
-        ) => {
-          const li = document.createElement("li");
-          li.className =
-            "page-item" +
-            (disabled ? " disabled" : "") +
-            (active ? " active" : "");
-          const a = document.createElement("a");
-          a.className = "page-link";
-          a.href = "#";
-          a.textContent = label;
-          a.dataset.page = page;
-          li.appendChild(a);
-          return li;
-        };
-
-        // prev
-        cont.appendChild(
-          createPageItem("«", Math.max(1, currentPage - 1), currentPage === 1)
-        );
-        // page numbers (show up to 7 with ellipsis if many)
-        const maxButtons = 7;
-        let start = Math.max(1, currentPage - Math.floor(maxButtons / 2));
-        let end = Math.min(totalPages, start + maxButtons - 1);
-        if (end - start < maxButtons - 1)
-          start = Math.max(1, end - maxButtons + 1);
-
-        if (start > 1) {
-          cont.appendChild(createPageItem("1", 1, false, currentPage === 1));
-          if (start > 2) {
-            const li = document.createElement("li");
-            li.className = "page-item disabled";
-            const span = document.createElement("span");
-            span.className = "page-link";
-            span.textContent = "...";
-            li.appendChild(span);
-            cont.appendChild(li);
-          }
-        }
-
-        for (let p = start; p <= end; p++) {
-          cont.appendChild(
-            createPageItem(String(p), p, false, p === currentPage)
-          );
-        }
-
-        if (end < totalPages) {
-          if (end < totalPages - 1) {
-            const li = document.createElement("li");
-            li.className = "page-item disabled";
-            const span = document.createElement("span");
-            span.className = "page-link";
-            span.textContent = "...";
-            li.appendChild(span);
-            cont.appendChild(li);
-          }
-          cont.appendChild(
-            createPageItem(
-              String(totalPages),
-              totalPages,
-              false,
-              currentPage === totalPages
-            )
-          );
-        }
-
-        // next
-        cont.appendChild(
-          createPageItem(
-            "»",
-            Math.min(totalPages, currentPage + 1),
-            currentPage === totalPages
-          )
-        );
-
-        // attach click handlers (delegation)
-        Array.from(cont.querySelectorAll("a.page-link")).forEach((a) => {
-          a.addEventListener("click", (e) => {
-            e.preventDefault();
-            const p = parseInt(a.dataset.page, 10) || 1;
-            // read items from current candidate list stored on window (cheap caching)
-            if (window._dashboardTodoCandidates) {
-              renderInvoiceList(window._dashboardTodoCandidates, p, 10);
-            }
-            // scroll to top of card for UX
-            window.scrollTo({
-              top: document.querySelector(".card").offsetTop - 80,
-              behavior: "smooth",
-            });
-          });
-        });
+        // hilangkan pagination & summary
+        document.getElementById("invoice-pagination").innerHTML = "";
+        document.getElementById(
+          "invoice-summary"
+        ).textContent = `Total ${items.length} invoice`;
       }
 
       // On load
@@ -766,7 +652,7 @@
           // sort candidates & store globally then render page 1
           todoCandidates.sort((a, b) => a.dueLocal - b.dueLocal);
           window._dashboardTodoCandidates = todoCandidates;
-          renderInvoiceList(todoCandidates, 1, 10);
+          renderInvoiceList(todoCandidates);
         } catch (err) {
           console.error("Inisialisasi dashboard gagal:", err);
         } finally {
