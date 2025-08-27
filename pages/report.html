@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AppPiutang | Report</title>
+
+    <!-- Google Font: Source Sans Pro -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="../assets/plugins/fontawesome-free/css/all.min.css"
+    />
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../assets/dist/css/adminlte.min.css" />
+
+    <!-- DataTables -->
+    <link
+      rel="stylesheet"
+      href="../assets/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../assets/plugins/datatables-responsive/css/responsive.bootstrap4.min.css"
+    />
+    <link
+      rel="stylesheet"
+      href="../assets/plugins/datatables-buttons/css/buttons.bootstrap4.min.css"
+    />
+
+    <style>
+      /* Minor styling untuk update dropdown agar lebih friendly */
+      .update-item .version {
+        font-weight: 700;
+      }
+      .update-item .muted {
+        color: #6c757d;
+        font-size: 0.85rem;
+      }
+      /* Batasi tinggi dropdown agar scrollable pada mobile; jika melebihi, user disarankan buka modal */
+      .update-dropdown {
+        max-height: 260px;
+        overflow-y: auto;
+        min-width: 360px;
+      }
+      /* Agar enak dibaca di mobile */
+      @media (max-width: 575px) {
+        .update-dropdown {
+          min-width: 260px;
+        }
+      }
+      /* animasi "fade-in" ringan untuk isi modal */
+      .fade-in-250 {
+        animation: fadeIn250 0.25s ease-in-out;
+      }
+      @keyframes fadeIn250 {
+        from {
+          opacity: 0;
+          transform: translateY(-6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+
+    <style>
+      /* kecilkan jarak kolom agar muat */
+      table.dataTable td,
+      table.dataTable th {
+        white-space: nowrap;
+      }
+      .nowrap-ellipsis {
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+      }
+    </style>
+  </head>
+  <body class="hold-transition sidebar-mini sidebar-collapse">
+    <div class="wrapper">
+      <!-- Navbar -->
+      <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+        <!-- Left navbar links -->
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" data-widget="pushmenu" href="#" role="button"
+              ><i class="fas fa-bars"></i
+            ></a>
+          </li>
+          <li class="nav-item d-none d-sm-inline-block">
+            <a href="../index.html" class="nav-link">Dashboard</a>
+          </li>
+          <li class="nav-item d-none d-sm-inline-block">
+            <a href="vendor.html" class="nav-link">Vendor</a>
+          </li>
+          <li class="nav-item d-none d-sm-inline-block">
+            <a href="invoice.html" class="nav-link">Invoice</a>
+          </li>
+          <li class="nav-item d-none d-sm-inline-block">
+            <a href="pelunasan.html" class="nav-link">Pelunasan</a>
+          </li>
+          <li class="nav-item d-none d-sm-inline-block">
+            <a href="report.html" class="nav-link">Report</a>
+          </li>
+        </ul>
+
+        <!-- Right navbar links -->
+        <ul class="navbar-nav ml-auto">
+          <!-- Update Log Dropdown Menu (menggantikan Notifications) -->
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link"
+              data-toggle="dropdown"
+              href="#"
+              aria-expanded="false"
+              id="updateLogToggle"
+              title="Update Log"
+            >
+              <i class="fas fa-history"></i>
+              <span id="updateBadge" class="badge badge-info navbar-badge"
+                >2</span
+              >
+            </a>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-0">
+              <div class="dropdown-header bg-primary text-white py-2 px-3">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <strong>Update Log</strong>
+                    <div style="font-size: 0.85rem; opacity: 0.9">
+                      Perubahan & perbaikan terbaru
+                    </div>
+                  </div>
+                  <small id="updateLogTime" class="muted">Terbaru</small>
+                </div>
+              </div>
+
+              <!-- Container untuk items (dirender via JS). class update-dropdown untuk scroll -->
+              <div
+                id="updateDropdownList"
+                class="update-dropdown list-group list-group-flush"
+              ></div>
+
+              <div class="dropdown-divider m-0"></div>
+
+              <div class="p-2 text-center">
+                <button
+                  id="seeAllUpdatesBtn"
+                  class="btn btn-sm btn-outline-primary btn-block"
+                >
+                  Lihat Semua Rincian &nbsp;<i
+                    class="fas fa-external-link-alt"
+                  ></i>
+                </button>
+              </div>
+            </div>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="#" id="logoutBtn" title="Logout">
+              <i class="fas fa-sign-out-alt"></i>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" data-widget="fullscreen" href="#" role="button">
+              <i class="fas fa-expand-arrows-alt"></i>
+            </a>
+          </li>
+        </ul>
+      </nav>
+      <!-- /.navbar -->
+
+      <!-- Main Sidebar Container -->
+      <aside class="main-sidebar sidebar-dark-primary elevation-4">
+        <!-- Brand Logo -->
+        <a href="#" class="brand-link">
+          <img
+            src="../assets/dist/img/AdminLTELogo.png"
+            alt="Logo"
+            class="brand-image img-circle elevation-3"
+            style="opacity: 0.8"
+          />
+          <span class="brand-text font-weight-light">AppPiutang</span>
+        </a>
+
+        <!-- Sidebar -->
+        <div class="sidebar">
+          <!-- (user panel, search, etc. if perlu) -->
+
+          <!-- Sidebar Menu -->
+          <nav class="mt-2">
+            <ul
+              class="nav nav-pills nav-sidebar flex-column"
+              data-widget="treeview"
+              role="menu"
+              data-accordion="false"
+            >
+              <!-- Dashboard -->
+              <li class="nav-item">
+                <a href="../index.html" class="nav-link">
+                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <p>Dashboard</p>
+                </a>
+              </li>
+
+              <!-- Vendor -->
+              <li class="nav-item">
+                <a href="vendor.html" class="nav-link">
+                  <i class="nav-icon fas fa-store"></i>
+                  <p>Vendor</p>
+                </a>
+              </li>
+
+              <!-- Invoice -->
+              <li class="nav-item">
+                <a href="invoice.html" class="nav-link">
+                  <i class="nav-icon fas fa-file-invoice"></i>
+                  <p>Invoice</p>
+                </a>
+              </li>
+
+              <!-- Pelunasan -->
+              <li class="nav-item">
+                <a href="pelunasan.html" class="nav-link">
+                  <i class="nav-icon fas fa-hand-holding-usd"></i>
+                  <p>Pelunasan</p>
+                </a>
+              </li>
+
+              <!-- Report -->
+              <li class="nav-item">
+                <a href="report.html" class="nav-link">
+                  <i class="nav-icon fas fa-clipboard-list"></i>
+                  <p>Report</p>
+                </a>
+              </li>
+            </ul>
+          </nav>
+          <!-- /.sidebar-menu -->
+        </div>
+        <!-- /.sidebar -->
+      </aside>
+
+      <div class="content-wrapper">
+        <section class="content-header">
+          <div class="container-fluid">
+            <div class="row mb-2">
+              <div class="col-sm-6">
+                <h1>Report</h1>
+              </div>
+              <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                  <li class="breadcrumb-item">
+                    <a href="../index.html">Home</a>
+                  </li>
+                  <li class="breadcrumb-item active">Report</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="content">
+          <div class="card">
+            <div
+              class="card-header d-flex justify-content-between align-items-center"
+            >
+              <h3 class="card-title">Laporan Detail Invoice (Gabungan Data)</h3>
+              <small id="lastLoaded" class="text-muted"></small>
+            </div>
+
+            <div class="card-body">
+              <div class="table-responsive">
+                <h3>Invoice Belum Lunas</h3>
+                <table
+                  id="reportTableBelum"
+                  class="table table-bordered table-striped table-sm"
+                >
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Nama Vendor</th>
+                      <th>Tanggal Inv</th>
+                      <th>No Inv</th>
+                      <th>Total Inv</th>
+                      <th>Due Date</th>
+                      <th>Tanggal Lunas</th>
+
+                      <th>Nama Barang</th>
+                      <th>Qty</th>
+                      <th>Satuan</th>
+                      <th>Harga (@)</th>
+                      <th>Diskon (%)</th>
+                      <th>Nilai Diskon</th>
+                      <th>Pajak (%)</th>
+                      <th>Pajak</th>
+                      <th>Subtotal</th>
+
+                      <th>ID Bayar</th>
+                      <th>Tanggal Bayar</th>
+                      <th>Total Tagihan</th>
+                      <th>Total Bayar</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+
+                <hr />
+
+                <h3>Invoice Sudah Lunas</h3>
+                <table
+                  id="reportTableSudah"
+                  class="table table-bordered table-striped table-sm"
+                >
+                  <thead>
+                    <tr>
+                      <th>No</th>
+                      <th>Nama Vendor</th>
+                      <th>Tanggal Inv</th>
+                      <th>No Inv</th>
+                      <th>Total Inv</th>
+                      <th>Due Date</th>
+                      <th>Tanggal Lunas</th>
+
+                      <th>Nama Barang</th>
+                      <th>Qty</th>
+                      <th>Satuan</th>
+                      <th>Harga (@)</th>
+                      <th>Diskon (%)</th>
+                      <th>Nilai Diskon</th>
+                      <th>Pajak (%)</th>
+                      <th>Pajak</th>
+                      <th>Subtotal</th>
+
+                      <th>ID Bayar</th>
+                      <th>Tanggal Bayar</th>
+                      <th>Total Tagihan</th>
+                      <th>Total Bayar</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div id="loadingOverlay" class="overlay d-none">
+              <i class="fas fa-2x fa-sync-alt fa-spin"></i>
+            </div>
+
+            <!-- --- Modal: Full Update Log --- -->
+            <div
+              class="modal fade"
+              id="modal-update-log"
+              tabindex="-1"
+              aria-labelledby="modalUpdateLogLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="modalUpdateLogLabel">
+                      Rincian Perubahan (Update Log)
+                    </h5>
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Tutup"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <!-- Spinner singkat saat membuka modal -->
+                    <div id="updateLogLoading" class="text-center py-3">
+                      <div
+                        class="spinner-border"
+                        role="status"
+                        aria-hidden="true"
+                      ></div>
+                      <div class="mt-2 text-muted">Memuat rincian...</div>
+                    </div>
+
+                    <!-- Konten akan dirender via JS ke dalam area ini -->
+                    <div id="updateLogContent" class="d-none fade-in-250"></div>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-dismiss="modal"
+                    >
+                      Tutup
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- END modal update log -->
+          </div>
+        </section>
+      </div>
+
+      <footer class="main-footer">
+        <div class="float-right d-none d-sm-block"><b>Version</b> 1.1.1</div>
+        <strong>&copy; 2025 <a href="#">AppPiutang</a>.</strong> All rights
+        reserved.
+      </footer>
+    </div>
+
+    <!-- js libs (sama seperti invoice) -->
+    <script src="../assets/plugins/jquery/jquery.min.js"></script>
+    <script src="../assets/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../assets/dist/js/adminlte.min.js"></script>
+
+    <!-- Select2 -->
+    <script src="../assets/plugins/select2/js/select2.full.min.js"></script>
+
+    <!-- DataTables -->
+    <script src="../assets/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="../assets/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+    <script src="../assets/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+    <script src="../assets/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+    <script src="../assets/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+    <script src="../assets/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+    <script src="../assets/plugins/jszip/jszip.min.js"></script>
+    <script src="../assets/plugins/pdfmake/pdfmake.min.js"></script>
+    <script src="../assets/plugins/pdfmake/vfs_fonts.js"></script>
+    <script src="../assets/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+    <script src="../assets/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+    <script src="../assets/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+
+    <script>
+      const token = sessionStorage.getItem("authToken");
+      const expiry = sessionStorage.getItem("authExpiry");
+
+      if (!token || !expiry || Date.now() > expiry) {
+        sessionStorage.clear();
+        window.location.href = "lockscreen.html";
+      }
+
+      document
+        .getElementById("logoutBtn")
+        ?.addEventListener("click", function (e) {
+          e.preventDefault();
+          if (confirm("Yakin mau keluar?")) {
+            sessionStorage.clear();
+            window.location.href = "lockscreen.html";
+          }
+        });
+
+      $(function () {
+        //Initialize Select2 Elements
+        $(".select2").select2();
+      });
+
+      // ------------------ UPDATE LOG DATA (rendered into navbar + modal) ------------------
+      // Urutkan dari versi terbaru -> lama
+      const updateLogs = [
+        {
+          version: "V.1.1.1",
+          date: "2025-08-26",
+          highlight:
+            "Menghilangkan pagination pada Invoice Jatuh Tempo & menambahkan halaman Report gabungan Buku Piutang",
+          details: [
+            "Menghilangkan pagination/halaman pada daftar Invoice Jatuh Tempo di Dashboard agar seluruh item terlihat tanpa pindah halaman — cocok bila Anda ingin melihat semuanya sekilas.",
+            "Menambahkan halaman Report baru yang mengumpulkan seluruh data Buku Piutang ke dalam satu tabel sehingga memudahkan ekspor/analisis.",
+            "Perbaikan kecil: tata letak dan konsistensi tombol pada halaman Report.",
+          ],
+        },
+        {
+          version: "V.1.0.1",
+          date: "2025-08-16",
+          highlight:
+            "Kolom baru untuk diskon & pajak, input nilai manual, urutan list terbaru di atas, pembulatan subtotal, dan perbaikan bug",
+          details: [
+            "Menambahkan kolom: Nilai Diskon, Pajak %, dan Nilai Pajak sehingga perhitungan invoice lebih jelas.",
+            "Nilai Diskon dan Nilai Pajak sekarang bisa diisi langsung secara manual tanpa harus mengisi persentasenya terlebih dulu — gampang kalau Anda sudah tahu nominalnya.",
+            "Daftar Invoice dan Vendor kini menampilkan item yang baru ditambahkan di bagian paling atas agar mudah terlihat.",
+            "Pengecekan error jumlah subtotal semua produk terhadap total invoice sekarang menerapkan aturan pembulatan sehingga mengurangi mismatch kecil karena desimal.",
+            "Perbaikan beberapa error / bug kecil sehingga pengalaman lebih stabil.",
+          ],
+        },
+      ];
+
+      // Renders brief list in dropdown and sets badge count
+      function renderUpdateDropdown() {
+        const $list = $("#updateDropdownList");
+        $list.empty();
+        updateLogs.forEach((u) => {
+          const item = $(`
+            <a href="#" class="list-group-item list-group-item-action update-item" data-version="${u.version}">
+              <div class="d-flex w-100 justify-content-between">
+                <div>
+                  <div class="version">${u.version}</div>
+                  <div class="muted">${u.date} &middot; ${u.highlight}</div>
+                </div>
+                <small class="text-primary align-self-start"><i class="fas fa-chevron-right"></i></small>
+              </div>
+            </a>
+          `);
+          $list.append(item);
+        });
+
+        // update badge
+        $("#updateBadge").text(updateLogs.length);
+
+        // set header time (terbaru)
+        if (updateLogs.length) {
+          $("#updateLogTime").text("Terbaru: " + updateLogs[0].date);
+        }
+      }
+
+      // Renders full details into modal
+      function renderUpdateModal(version) {
+        const u = updateLogs.find((x) => x.version === version);
+        const $content = $("#updateLogContent");
+        $content.empty();
+
+        if (!u) {
+          $content.append("<p>Tidak ada rincian untuk versi ini.</p>");
+          return;
+        }
+
+        const $html = $(`
+          <div>
+            <h5>${u.version} <small class="text-muted">(${u.date})</small></h5>
+            <p class="text-muted">${u.highlight}</p>
+            <ul></ul>
+          </div>
+        `);
+        u.details.forEach((d) => {
+          $html.find("ul").append(`<li>${d}</li>`);
+        });
+
+        // tambahan: saran singkat untuk pengguna awam (bahasa sederhana)
+        $html.append(
+          `<hr><p class="mb-0 text-muted small">Catatan singkat: jika Anda menggunakan fitur Invoice atau Report, silakan cek tata-letak kolom baru untuk diskon/pajak. Jika menemukan sesuatu yang aneh, hubungi tim IT / support.</p>`
+        );
+
+        $content.append($html);
+      }
+
+      // handle click on an item -> open modal with details (with short loading animation)
+      $(document).on("click", ".update-item", function (e) {
+        e.preventDefault();
+        const version = $(this).data("version");
+        $("#modal-update-log").modal("show");
+        // show spinner, hide content
+        $("#updateLogContent").addClass("d-none").empty();
+        $("#updateLogLoading").show();
+
+        // simulate small loading to make UX smoother (200-400ms)
+        setTimeout(function () {
+          renderUpdateModal(version);
+          $("#updateLogLoading").hide();
+          $("#updateLogContent").removeClass("d-none");
+        }, 280);
+      });
+
+      // "Lihat Semua Rincian" button -> show modal with full list (newest first)
+      $("#seeAllUpdatesBtn").on("click", function () {
+        $("#modal-update-log").modal("show");
+        $("#updateLogContent").addClass("d-none").empty();
+        $("#updateLogLoading").show();
+
+        setTimeout(function () {
+          // render all versions in modal
+          const $content = $("#updateLogContent");
+          updateLogs.forEach((u) => {
+            const $block = $(`
+              <div class="mb-3">
+                <h5>${u.version} <small class="text-muted">(${u.date})</small></h5>
+                <p class="text-muted">${u.highlight}</p>
+                <ul></ul>
+              </div>
+            `);
+            u.details.forEach((d) => $block.find("ul").append(`<li>${d}</li>`));
+            $content.append($block);
+          });
+          $content.append(
+            `<hr><p class="text-muted small mb-0">Terakhir diperbarui: ${updateLogs[0].date}</p>`
+          );
+          $("#updateLogLoading").hide();
+          $content.removeClass("d-none");
+        }, 350);
+      });
+
+      // On dropdown open, if the list is taller than threshold, show hint to open modal
+      $(document).on("shown.bs.dropdown", "#updateLogToggle", function () {
+        const $list = $("#updateDropdownList");
+        // if scroll height is large, ensure user can open modal
+        if ($list.prop("scrollHeight") > 240) {
+          // optional: flash the "See All" button briefly
+          $("#seeAllUpdatesBtn").addClass("btn-outline-success");
+          setTimeout(
+            () => $("#seeAllUpdatesBtn").removeClass("btn-outline-success"),
+            700
+          );
+        }
+      });
+
+      // Init render
+      $(function () {
+        renderUpdateDropdown();
+      });
+
+      function setActiveMenuForReportPage() {
+        // hapus active pada semua nav-link dulu
+        document
+          .querySelectorAll(".nav-link")
+          .forEach((a) => a.classList.remove("active"));
+
+        // aktifkan link yang mengarah ke report.html
+        const anchors = Array.from(document.querySelectorAll("a.nav-link"));
+        anchors.forEach((a) => {
+          try {
+            const href = a.getAttribute("href") || "";
+            if (href.endsWith("report.html") || href === "report.html") {
+              a.classList.add("active");
+              // jika ada parent li, beri juga class active/menu-open (safe)
+              const li = a.closest(".nav-item");
+              if (li) li.classList.add("menu-open");
+            }
+          } catch (e) {
+            /* ignore */
+          }
+        });
+
+        // juga coba beri active pada top navbar (jika ada link yang cocok)
+        const topNav = Array.from(document.querySelectorAll(".navbar-nav a"));
+        topNav.forEach((a) => {
+          const href = a.getAttribute("href") || "";
+          if (href.endsWith("report.html")) a.classList.add("active");
+        });
+      }
+
+      const API_URL =
+        "https://script.google.com/macros/s/AKfycbyVnN6XoE6ZYJsAEqLVz5yHOCbGd0Soo425i1W8yu8rxwrWpWcUYEWWp_NwenBW1lIL/exec";
+
+      function setLoading(on) {
+        document
+          .getElementById("loadingOverlay")
+          .classList.toggle("d-none", !on);
+      }
+
+      function formatDate(dateStr) {
+        if (!dateStr || String(dateStr).trim() === "") return "-";
+        const d = new Date(dateStr);
+        d.setTime(d.getTime() + 7 * 60 * 60 * 1000);
+        const yyyy = d.getFullYear();
+        const mm = String(d.getMonth() + 1).padStart(2, "0");
+        const dd = String(d.getDate()).padStart(2, "0");
+        return `${yyyy}-${mm}-${dd}`;
+      }
+
+      async function fetchData(table) {
+        const cacheBuster = `&_ts=${Date.now()}`;
+        const res = await fetch(
+          `${API_URL}?table=${table}&action=read${cacheBuster}`
+        );
+        return await res.json();
+      }
+
+      let reportTableBelum = null;
+      let reportTableSudah = null;
+
+      async function loadReport() {
+        setLoading(true);
+        try {
+          const [vendors, invoices, details, receivables, recedetails] =
+            await Promise.all([
+              fetchData("vendors"),
+              fetchData("invoices"),
+              fetchData("details"),
+              fetchData("receivables"),
+              fetchData("recedetails"),
+            ]);
+
+          // maps & grouping
+          const vendorMap = {};
+          vendors.forEach((v) => {
+            vendorMap[v.id] = v.nama;
+          });
+
+          const detailsByInvoice = {};
+          details.forEach((d) => {
+            if (!detailsByInvoice[d.invoice_id])
+              detailsByInvoice[d.invoice_id] = [];
+            detailsByInvoice[d.invoice_id].push(d);
+          });
+
+          const receivableMap = {};
+          receivables.forEach((r) => {
+            receivableMap[r.id] = r;
+          });
+
+          const recedetailsByInvoice = {};
+          recedetails.forEach((rd) => {
+            if (!recedetailsByInvoice[rd.invoice_id])
+              recedetailsByInvoice[rd.invoice_id] = [];
+            recedetailsByInvoice[rd.invoice_id].push(rd);
+          });
+
+          // Build rows with flag paid/unpaid (paid = ada tanggal_lunas)
+          const rows = [];
+          const sortedInvoices = [...invoices].sort((a, b) => {
+            const ai = parseInt(a.id, 10),
+              bi = parseInt(b.id, 10);
+            if (!isNaN(ai) && !isNaN(bi)) return bi - ai;
+            return (b.id || "")
+              .toString()
+              .localeCompare((a.id || "").toString(), undefined, {
+                numeric: true,
+              });
+          });
+
+          for (const inv of sortedInvoices) {
+            const vendorName = vendorMap[inv.vendor_id] || "Tidak Diketahui";
+            const invDetails =
+              detailsByInvoice[inv.id] && detailsByInvoice[inv.id].length
+                ? detailsByInvoice[inv.id]
+                : [null];
+            const recs =
+              recedetailsByInvoice[inv.id] &&
+              recedetailsByInvoice[inv.id].length
+                ? recedetailsByInvoice[inv.id]
+                : [null];
+
+            const isPaid =
+              inv.tanggal_lunas != null &&
+              String(inv.tanggal_lunas).trim() !== "";
+
+            for (const det of invDetails) {
+              for (const rd of recs) {
+                let recId = "",
+                  recTanggal = "-",
+                  recTotalTagihan = "-",
+                  recTotalBayar = "-";
+                if (rd && receivableMap[rd.receivable_id]) {
+                  const rec = receivableMap[rd.receivable_id];
+                  recId = rec.id || "";
+                  recTanggal = formatDate(rec.tanggal);
+                  recTotalTagihan = rec.total_tagihan
+                    ? parseFloat(rec.total_tagihan).toLocaleString("id-ID")
+                    : "-";
+                  recTotalBayar = rec.total_bayar
+                    ? parseFloat(rec.total_bayar).toLocaleString("id-ID")
+                    : "-";
+                }
+
+                rows.push({
+                  vendorName,
+                  tanggal_inv: formatDate(inv.tanggal_inv),
+                  no_inv: inv.no_inv || "-",
+                  total_inv: inv.total_inv
+                    ? parseFloat(inv.total_inv).toLocaleString("id-ID")
+                    : "-",
+                  due_date: formatDate(inv.due_date),
+                  tanggal_lunas: formatDate(inv.tanggal_lunas),
+                  nama_barang: det ? det.nama_barang || "-" : "-",
+                  qty: det ? det.qty || "-" : "-",
+                  satuan: det ? det.unit || "-" : "-",
+                  harga: det
+                    ? det.price_per
+                      ? parseFloat(det.price_per).toLocaleString("id-ID")
+                      : "-"
+                    : "-",
+                  diskon_pct: det ? det.discount || "-" : "-",
+                  diskon_val: det
+                    ? det.discount_val
+                      ? parseFloat(det.discount_val).toLocaleString("id-ID")
+                      : "-"
+                    : "-",
+                  tax_pct: det ? det.tax_pct || "-" : "-",
+                  tax_val: det
+                    ? det.tax_val || det.tax
+                      ? det.tax_val
+                        ? parseFloat(det.tax_val).toLocaleString("id-ID")
+                        : "-"
+                      : "-"
+                    : "-",
+                  subtotal: det
+                    ? det.subtotal
+                      ? parseFloat(det.subtotal).toLocaleString("id-ID")
+                      : "-"
+                    : "-",
+                  id_bayar: recId,
+                  tanggal_bayar: recTanggal,
+                  total_tagihan: recTotalTagihan,
+                  total_bayar: recTotalBayar,
+                  paid: isPaid,
+                });
+              }
+            }
+          }
+
+          // render two tbodies
+          const tbodyBelum = document.querySelector("#reportTableBelum tbody");
+          const tbodySudah = document.querySelector("#reportTableSudah tbody");
+          if (!tbodyBelum || !tbodySudah) throw new Error("Tbody not found");
+
+          let htmlBelum = "";
+          let htmlSudah = "";
+          let noBelum = 1;
+          let noSudah = 1;
+
+          for (const r of rows) {
+            const rowHtml = `<tr>
+              <td>${r.paid ? "" : noBelum > 0 ? (r.paid ? "" : noBelum) : ""}${
+              r.paid ? "" : ""
+            }</td>
+              <td class="nowrap-ellipsis">${escapeHtml(r.vendorName)}</td>
+              <td>${r.tanggal_inv}</td>
+              <td class="nowrap-ellipsis">${escapeHtml(r.no_inv)}</td>
+              <td class="text-right">${r.total_inv}</td>
+              <td>${r.due_date}</td>
+              <td>${r.tanggal_lunas}</td>
+
+              <td class="nowrap-ellipsis">${escapeHtml(r.nama_barang)}</td>
+              <td class="text-right">${r.qty}</td>
+              <td>${escapeHtml(r.satuan)}</td>
+              <td class="text-right">${r.harga}</td>
+              <td class="text-right">${r.diskon_pct}</td>
+              <td class="text-right">${r.diskon_val}</td>
+              <td class="text-right">${r.tax_pct}</td>
+              <td class="text-right">${r.tax_val}</td>
+              <td class="text-right">${r.subtotal}</td>
+
+              <td>${r.id_bayar || "-"}</td>
+              <td>${r.tanggal_bayar}</td>
+              <td class="text-right">${r.total_tagihan}</td>
+              <td class="text-right">${r.total_bayar}</td>
+            </tr>`;
+
+            if (r.paid) {
+              htmlSudah += rowHtml.replace(
+                "<td></td>",
+                `<td>${noSudah++}</td>`
+              );
+            } else {
+              htmlBelum += rowHtml.replace(
+                "<td></td>",
+                `<td>${noBelum++}</td>`
+              );
+            }
+          }
+
+          tbodyBelum.innerHTML = htmlBelum;
+          tbodySudah.innerHTML = htmlSudah;
+
+          document.getElementById(
+            "lastLoaded"
+          ).textContent = `Dimuat pada: ${new Date().toLocaleString("id-ID")}`;
+
+          // destroy existing datatables if ada
+          if (reportTableBelum) {
+            reportTableBelum.clear().destroy();
+          }
+          if (reportTableSudah) {
+            reportTableSudah.clear().destroy();
+          }
+
+          // compute total columns & allCols for export
+          const totalCols = document.querySelectorAll(
+            "#reportTableBelum thead th"
+          ).length;
+          const allCols = Array.from({ length: totalCols }, (_, i) => i);
+
+          // Init DataTable - Belum Lunas (non-paging: show all)
+          reportTableBelum = $("#reportTableBelum").DataTable({
+            destroy: true,
+            responsive: true,
+            paging: false, // tampilkan semua baris
+            lengthChange: false, // hide length selector
+            searching: true,
+            autoWidth: false,
+            order: [],
+            buttons: [
+              {
+                extend: "copy",
+                title: "Report Detail Invoice - Belum Lunas",
+                messageTop: document.getElementById("lastLoaded").textContent,
+                exportOptions: {
+                  columns: allCols,
+                  format: {
+                    body: function (data, row, column, node) {
+                      return normalizeNumberForExcel(data);
+                    },
+                  },
+                },
+              },
+              {
+                extend: "excelHtml5",
+                title: "Report Detail Invoice - Belum Lunas",
+                messageTop: document.getElementById("lastLoaded").textContent,
+                exportOptions: {
+                  columns: allCols,
+                  format: {
+                    body: function (data, row, column, node) {
+                      return normalizeNumberForExcel(data);
+                    },
+                  },
+                },
+              },
+              {
+                extend: "pdf",
+                title: "Report Detail Invoice - Belum Lunas",
+                messageTop: document.getElementById("lastLoaded").textContent,
+                exportOptions: { columns: allCols },
+              },
+              {
+                extend: "print",
+                title: "Report Detail Invoice - Belum Lunas",
+                messageTop: document.getElementById("lastLoaded").textContent,
+                exportOptions: { columns: allCols },
+              },
+              "colvis",
+            ],
+            columnDefs: [
+              {
+                targets: [4, 8, 10, 11, 12, 13, 14, 18, 19],
+                className: "text-right",
+              },
+            ],
+          });
+
+          reportTableBelum
+            .buttons()
+            .container()
+            .appendTo("#reportTableBelum_wrapper .col-md-6:eq(0)");
+
+          // Init DataTable - Sudah Lunas (non-paging)
+          reportTableSudah = $("#reportTableSudah").DataTable({
+            destroy: true,
+            responsive: true,
+            paging: false,
+            lengthChange: false,
+            searching: true,
+            autoWidth: false,
+            order: [],
+            buttons: [
+              {
+                extend: "copy",
+                title: "Report Detail Invoice - Sudah Lunas",
+                messageTop: document.getElementById("lastLoaded").textContent,
+                exportOptions: {
+                  columns: allCols,
+                  format: {
+                    body: function (data, row, column, node) {
+                      return normalizeNumberForExcel(data);
+                    },
+                  },
+                },
+              },
+              {
+                extend: "excelHtml5",
+                title: "Report Detail Invoice - Sudah Lunas",
+                messageTop: document.getElementById("lastLoaded").textContent,
+                exportOptions: {
+                  columns: allCols,
+                  format: {
+                    body: function (data, row, column, node) {
+                      return normalizeNumberForExcel(data);
+                    },
+                  },
+                },
+              },
+              {
+                extend: "pdf",
+                title: "Report Detail Invoice - Sudah Lunas",
+                messageTop: document.getElementById("lastLoaded").textContent,
+                exportOptions: { columns: allCols },
+              },
+              {
+                extend: "print",
+                title: "Report Detail Invoice - Sudah Lunas",
+                messageTop: document.getElementById("lastLoaded").textContent,
+                exportOptions: { columns: allCols },
+              },
+              "colvis",
+            ],
+            columnDefs: [
+              {
+                targets: [4, 8, 10, 11, 12, 13, 14, 18, 19],
+                className: "text-right",
+              },
+            ],
+          });
+
+          reportTableSudah
+            .buttons()
+            .container()
+            .appendTo("#reportTableSudah_wrapper .col-md-6:eq(0)");
+        } catch (err) {
+          console.error("Gagal memuat report:", err);
+        } finally {
+          setLoading(false);
+        }
+      }
+
+      function normalizeNumberForExcel(cellText) {
+        if (cellText === null || cellText === undefined) return "";
+        const tmp = $("<div>").html(cellText).text().trim();
+        if (!/^[0-9\.\,\-\s]+$/.test(tmp)) return tmp;
+        let s = tmp.replace(/\s+/g, "");
+        if (s.indexOf(",") !== -1) {
+          s = s.replace(/\./g, "").replace(/,/g, ".");
+        } else {
+          s = s.replace(/\./g, "");
+        }
+        if (s === "" || s === "-") return tmp;
+        return s;
+      }
+
+      function escapeHtml(unsafe) {
+        if (unsafe === null || unsafe === undefined) return "";
+        return String(unsafe)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      document.addEventListener("DOMContentLoaded", () => {
+        loadReport();
+        setActiveMenuForReportPage();
+      });
+    </script>
+  </body>
+</html>
