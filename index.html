@@ -19,22 +19,64 @@
     <link rel="stylesheet" href="assets/dist/css/adminlte.min.css" />
 
     <style>
-      /* full-screen loading overlay */
+      /* Minor styling untuk update dropdown agar lebih friendly */
+      .update-item .version {
+        font-weight: 700;
+      }
+      .update-item .muted {
+        color: #6c757d;
+        font-size: 0.85rem;
+      }
+      /* Batasi tinggi dropdown agar scrollable pada mobile; jika melebihi, user disarankan buka modal */
+      .update-dropdown {
+        max-height: 260px;
+        overflow-y: auto;
+        min-width: 360px;
+      }
+      /* Agar enak dibaca di mobile */
+      @media (max-width: 575px) {
+        .update-dropdown {
+          min-width: 260px;
+        }
+      }
+      /* animasi "fade-in" ringan untuk isi modal */
+      .fade-in-250 {
+        animation: fadeIn250 0.25s ease-in-out;
+      }
+      @keyframes fadeIn250 {
+        from {
+          opacity: 0;
+          transform: translateY(-6px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+
+    <style>
+      /* let .content-wrapper be the positioning context for the overlay */
+      .content-wrapper {
+        position: relative; /* agar overlay hanya menutupi content area */
+      }
+
+      /* non-fullscreen content overlay */
       #loadingOverlay {
-        position: fixed;
+        position: absolute;
         top: 0;
         left: 0;
         width: 100%;
         height: 100%;
-        background: rgba(255, 255, 255, 0.7);
+        background: rgba(255, 255, 255, 0.75);
         display: flex;
         align-items: center;
         justify-content: center;
-        z-index: 9999;
-      }
-      #loadingOverlay .spinner {
-        font-size: 2.2rem;
-        color: #007bff;
+        z-index: 1030; /* di bawah modal Bootstrap (1050) sehingga modal tetap tampil di atas */
+        pointer-events: auto; /* menahan interaksi pada area konten saat loading */
+        transition: opacity 0.18s ease, visibility 0.18s ease;
+        opacity: 1;
+        visibility: visible;
       }
       /* kecilkan teks tanggal di list */
       .invoice-row .meta {
@@ -82,9 +124,61 @@
           <li class="nav-item d-none d-sm-inline-block">
             <a href="pages/pelunasan.html" class="nav-link">Pelunasan</a>
           </li>
+          <li class="nav-item d-none d-sm-inline-block">
+            <a href="pages/report.html" class="nav-link">Report</a>
+          </li>
         </ul>
 
+        <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
+          <!-- Update Log Dropdown Menu (menggantikan Notifications) -->
+          <li class="nav-item dropdown">
+            <a
+              class="nav-link"
+              data-toggle="dropdown"
+              href="#"
+              aria-expanded="false"
+              id="updateLogToggle"
+              title="Update Log"
+            >
+              <i class="fas fa-history"></i>
+              <span id="updateBadge" class="badge badge-info navbar-badge"
+                >2</span
+              >
+            </a>
+            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right p-0">
+              <div class="dropdown-header bg-primary text-white py-2 px-3">
+                <div class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <strong>Update Log</strong>
+                    <div style="font-size: 0.85rem; opacity: 0.9">
+                      Perubahan & perbaikan terbaru
+                    </div>
+                  </div>
+                  <small id="updateLogTime" class="muted">Terbaru</small>
+                </div>
+              </div>
+
+              <!-- Container untuk items (dirender via JS). class update-dropdown untuk scroll -->
+              <div
+                id="updateDropdownList"
+                class="update-dropdown list-group list-group-flush"
+              ></div>
+
+              <div class="dropdown-divider m-0"></div>
+
+              <div class="p-2 text-center">
+                <button
+                  id="seeAllUpdatesBtn"
+                  class="btn btn-sm btn-outline-primary btn-block"
+                >
+                  Lihat Semua Rincian &nbsp;<i
+                    class="fas fa-external-link-alt"
+                  ></i>
+                </button>
+              </div>
+            </div>
+          </li>
           <li class="nav-item">
             <a class="nav-link" href="#" id="logoutBtn" title="Logout">
               <i class="fas fa-sign-out-alt"></i>
@@ -143,6 +237,12 @@
                 >
                   <i class="nav-icon fas fa-hand-holding-usd"></i>
                   <p>Pelunasan</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="pages/report.html" class="nav-link" id="nav-report">
+                  <i class="nav-icon fas fa-clipboard-list"></i>
+                  <p>Report</p>
                 </a>
               </li>
             </ul>
@@ -295,12 +395,62 @@
                 </p>
               </div>
             </div>
+            <!-- --- Modal: Full Update Log --- -->
+            <div
+              class="modal fade"
+              id="modal-update-log"
+              tabindex="-1"
+              aria-labelledby="modalUpdateLogLabel"
+              aria-hidden="true"
+            >
+              <div class="modal-dialog modal-lg modal-dialog-centered">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="modalUpdateLogLabel">
+                      Rincian Perubahan (Update Log)
+                    </h5>
+                    <button
+                      type="button"
+                      class="close"
+                      data-dismiss="modal"
+                      aria-label="Tutup"
+                    >
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                  <div class="modal-body">
+                    <!-- Spinner singkat saat membuka modal -->
+                    <div id="updateLogLoading" class="text-center py-3">
+                      <div
+                        class="spinner-border"
+                        role="status"
+                        aria-hidden="true"
+                      ></div>
+                      <div class="mt-2 text-muted">Memuat rincian...</div>
+                    </div>
+
+                    <!-- Konten akan dirender via JS ke dalam area ini -->
+                    <div id="updateLogContent" class="d-none fade-in-250"></div>
+                  </div>
+                  <div class="modal-footer">
+                    <button
+                      type="button"
+                      class="btn btn-secondary"
+                      data-dismiss="modal"
+                    >
+                      Tutup
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- END modal update log -->
           </div>
         </section>
       </div>
 
       <footer class="main-footer">
-        <div class="float-right d-none d-sm-block"><b>Version</b> 1.0.0</div>
+        <div class="float-right d-none d-sm-block"><b>Version</b> 1.1.1</div>
         <strong>&copy; 2025 <a href="#">AppPiutang</a>.</strong> All rights
         reserved.
       </footer>
@@ -329,6 +479,157 @@
             window.location.href = "pages/lockscreen.html";
           }
         });
+
+      // ------------------ UPDATE LOG DATA (rendered into navbar + modal) ------------------
+      // Urutkan dari versi terbaru -> lama
+      const updateLogs = [
+        {
+          version: "V.1.1.1",
+          date: "2025-08-26",
+          highlight:
+            "Menghilangkan pagination pada Invoice Jatuh Tempo & menambahkan halaman Report gabungan Buku Piutang",
+          details: [
+            "Menghilangkan pagination/halaman pada daftar Invoice Jatuh Tempo di Dashboard agar seluruh item terlihat tanpa pindah halaman — cocok bila Anda ingin melihat semuanya sekilas.",
+            "Menambahkan halaman Report baru yang mengumpulkan seluruh data Buku Piutang ke dalam satu tabel sehingga memudahkan ekspor/analisis.",
+            "Perbaikan kecil: tata letak dan konsistensi tombol pada halaman Report.",
+          ],
+        },
+        {
+          version: "V.1.0.1",
+          date: "2025-08-16",
+          highlight:
+            "Kolom baru untuk diskon & pajak, input nilai manual, urutan list terbaru di atas, pembulatan subtotal, dan perbaikan bug",
+          details: [
+            "Menambahkan kolom: Nilai Diskon, Pajak %, dan Nilai Pajak sehingga perhitungan invoice lebih jelas.",
+            "Nilai Diskon dan Nilai Pajak sekarang bisa diisi langsung secara manual tanpa harus mengisi persentasenya terlebih dulu — gampang kalau Anda sudah tahu nominalnya.",
+            "Daftar Invoice dan Vendor kini menampilkan item yang baru ditambahkan di bagian paling atas agar mudah terlihat.",
+            "Pengecekan error jumlah subtotal semua produk terhadap total invoice sekarang menerapkan aturan pembulatan sehingga mengurangi mismatch kecil karena desimal.",
+            "Perbaikan beberapa error / bug kecil sehingga pengalaman lebih stabil.",
+          ],
+        },
+      ];
+
+      // Renders brief list in dropdown and sets badge count
+      function renderUpdateDropdown() {
+        const $list = $("#updateDropdownList");
+        $list.empty();
+        updateLogs.forEach((u) => {
+          const item = $(`
+            <a href="#" class="list-group-item list-group-item-action update-item" data-version="${u.version}">
+              <div class="d-flex w-100 justify-content-between">
+                <div>
+                  <div class="version">${u.version}</div>
+                  <div class="muted">${u.date} &middot; ${u.highlight}</div>
+                </div>
+                <small class="text-primary align-self-start"><i class="fas fa-chevron-right"></i></small>
+              </div>
+            </a>
+          `);
+          $list.append(item);
+        });
+
+        // update badge
+        $("#updateBadge").text(updateLogs.length);
+
+        // set header time (terbaru)
+        if (updateLogs.length) {
+          $("#updateLogTime").text("Terbaru: " + updateLogs[0].date);
+        }
+      }
+
+      // Renders full details into modal
+      function renderUpdateModal(version) {
+        const u = updateLogs.find((x) => x.version === version);
+        const $content = $("#updateLogContent");
+        $content.empty();
+
+        if (!u) {
+          $content.append("<p>Tidak ada rincian untuk versi ini.</p>");
+          return;
+        }
+
+        const $html = $(`
+          <div>
+            <h5>${u.version} <small class="text-muted">(${u.date})</small></h5>
+            <p class="text-muted">${u.highlight}</p>
+            <ul></ul>
+          </div>
+        `);
+        u.details.forEach((d) => {
+          $html.find("ul").append(`<li>${d}</li>`);
+        });
+
+        // tambahan: saran singkat untuk pengguna awam (bahasa sederhana)
+        $html.append(
+          `<hr><p class="mb-0 text-muted small">Catatan singkat: jika Anda menggunakan fitur Invoice atau Report, silakan cek tata-letak kolom baru untuk diskon/pajak. Jika menemukan sesuatu yang aneh, hubungi tim IT / support.</p>`
+        );
+
+        $content.append($html);
+      }
+
+      // handle click on an item -> open modal with details (with short loading animation)
+      $(document).on("click", ".update-item", function (e) {
+        e.preventDefault();
+        const version = $(this).data("version");
+        $("#modal-update-log").modal("show");
+        // show spinner, hide content
+        $("#updateLogContent").addClass("d-none").empty();
+        $("#updateLogLoading").show();
+
+        // simulate small loading to make UX smoother (200-400ms)
+        setTimeout(function () {
+          renderUpdateModal(version);
+          $("#updateLogLoading").hide();
+          $("#updateLogContent").removeClass("d-none");
+        }, 280);
+      });
+
+      // "Lihat Semua Rincian" button -> show modal with full list (newest first)
+      $("#seeAllUpdatesBtn").on("click", function () {
+        $("#modal-update-log").modal("show");
+        $("#updateLogContent").addClass("d-none").empty();
+        $("#updateLogLoading").show();
+
+        setTimeout(function () {
+          // render all versions in modal
+          const $content = $("#updateLogContent");
+          updateLogs.forEach((u) => {
+            const $block = $(`
+              <div class="mb-3">
+                <h5>${u.version} <small class="text-muted">(${u.date})</small></h5>
+                <p class="text-muted">${u.highlight}</p>
+                <ul></ul>
+              </div>
+            `);
+            u.details.forEach((d) => $block.find("ul").append(`<li>${d}</li>`));
+            $content.append($block);
+          });
+          $content.append(
+            `<hr><p class="text-muted small mb-0">Terakhir diperbarui: ${updateLogs[0].date}</p>`
+          );
+          $("#updateLogLoading").hide();
+          $content.removeClass("d-none");
+        }, 350);
+      });
+
+      // On dropdown open, if the list is taller than threshold, show hint to open modal
+      $(document).on("shown.bs.dropdown", "#updateLogToggle", function () {
+        const $list = $("#updateDropdownList");
+        // if scroll height is large, ensure user can open modal
+        if ($list.prop("scrollHeight") > 240) {
+          // optional: flash the "See All" button briefly
+          $("#seeAllUpdatesBtn").addClass("btn-outline-success");
+          setTimeout(
+            () => $("#seeAllUpdatesBtn").removeClass("btn-outline-success"),
+            700
+          );
+        }
+      });
+
+      // Init render
+      $(function () {
+        renderUpdateDropdown();
+      });
 
       const API_URL =
         "https://script.google.com/macros/s/AKfycbyVnN6XoE6ZYJsAEqLVz5yHOCbGd0Soo425i1W8yu8rxwrWpWcUYEWWp_NwenBW1lIL/exec";
