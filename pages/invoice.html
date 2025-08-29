@@ -1730,119 +1730,137 @@
         return `${dd}/${mm}/${yyyy}`;
       }
 
-      // Pasang listener Edit & Delete setiap kali tabel di-refresh
+      // Revisi setupInvoiceActions() — idempotent, menggunakan delegation.
+      // Aman dipanggil berkali-kali (mis. setiap loadInvoices()).
       function setupInvoiceActions() {
-        // EDIT
-        document.querySelectorAll(".btn-edit").forEach((btn) =>
-          btn.addEventListener("click", async (e) => {
-            const id = e.currentTarget.dataset.id;
-            const inv = cachedInvoices.find((x) => x.id == id);
-            if (!inv) return;
+        // jika sudah dipasang sebelumnya, hentikan (agar tidak dobel)
+        if (setupInvoiceActions._initialized) return;
 
-            // Isi form
-            document.getElementById("editInvoiceId").value = inv.id;
-            document.getElementById("editNoInvInput").value = inv.no_inv;
-            document.getElementById("editTotalInvInput").value = inv.total_inv;
-            // Tanggal format dd/mm/yyyy
-            document.getElementById("editTanggalInvInput").value =
-              formatDateToDMY(inv.tanggal_inv);
-            document.getElementById("editDueDateInput").value = formatDateToDMY(
-              inv.due_date
-            );
-            document.getElementById("editTanggalLunasInput").value =
-              formatDateToDMY(inv.tanggal_lunas);
+        // Delegated click handler untuk Edit dan Delete (dipasang sekali)
+        document.addEventListener(
+          "click",
+          async function delegatedClickHandler(e) {
+            // ---------- EDIT ----------
+            const editBtn = e.target.closest && e.target.closest(".btn-edit");
+            if (editBtn) {
+              e.preventDefault();
+              const id = editBtn.dataset.id;
+              const inv = cachedInvoices.find((x) => x.id == id);
+              if (!inv) return;
 
-            // Select vendor
-            const $vs = $("#editVendorSelect");
-            $vs.empty().append('<option value="">-- Pilih Vendor --</option>');
-            cachedVendors.forEach((v) =>
-              $vs.append(`<option value="${v.id}">${v.nama}</option>`)
-            );
-            $vs.val(inv.vendor_id).trigger("change");
+              // Isi form
+              document.getElementById("editInvoiceId").value = inv.id;
+              document.getElementById("editNoInvInput").value =
+                inv.no_inv || "";
+              document.getElementById("editTotalInvInput").value =
+                inv.total_inv || "";
+              // Tanggal format dd/mm/yyyy (formatDateToDMY meng-handle '-' -> '')
+              document.getElementById("editTanggalInvInput").value =
+                formatDateToDMY(inv.tanggal_inv);
+              document.getElementById("editDueDateInput").value =
+                formatDateToDMY(inv.due_date);
+              document.getElementById("editTanggalLunasInput").value =
+                formatDateToDMY(inv.tanggal_lunas);
 
-            // Reset error labels
-            document
-              .querySelectorAll("#formEditInvoice small.text-danger")
-              .forEach((el) => el.classList.add("d-none"));
-            // Tampilkan modal
-            $("#modal-edit-invoice").modal("show");
-          })
-        );
+              // Select vendor (re-init opsi dari cachedVendors)
+              const $vs = $("#editVendorSelect");
+              $vs
+                .empty()
+                .append('<option value="">-- Pilih Vendor --</option>');
+              (cachedVendors || []).forEach((v) =>
+                $vs.append(`<option value="${v.id}">${v.nama}</option>`)
+              );
+              $vs.val(inv.vendor_id).trigger("change");
 
-        // DELETE Invoice dan semua detail terkait (bulk delete + queue)
-        document.querySelectorAll(".btn-delete").forEach((btn) =>
-          btn.addEventListener("click", async (e) => {
-            const id = e.currentTarget.dataset.id;
+              // Reset error labels
+              document
+                .querySelectorAll("#formEditInvoice small.text-danger")
+                .forEach((el) => el.classList.add("d-none"));
 
-            const result = await Swal.fire({
-              title: "Yakin ingin menghapus invoice ini?",
-              text: "Semua detail terkait invoice ini juga akan dihapus.",
-              icon: "warning",
-              showCancelButton: true,
-              confirmButtonText: "Ya, Hapus!",
-              cancelButtonText: "Batal",
-            });
-            if (!result.isConfirmed) return;
+              // Tampilkan modal
+              $("#modal-edit-invoice").modal("show");
+              return;
+            }
 
-            addActionToQueue("Menghapus invoice dan detail", async () => {
-              try {
-                // 1. Ambil semua detail terbaru
-                let allDetails = await fetchData("details");
+            // ---------- DELETE ----------
+            const delBtn = e.target.closest && e.target.closest(".btn-delete");
+            if (delBtn) {
+              e.preventDefault();
+              const id = delBtn.dataset.id;
 
-                // 2. Filter detail yang terkait invoice
-                const relatedDetails = allDetails.filter(
-                  (d) => d.invoice_id.toString() === id.toString()
-                );
+              const result = await Swal.fire({
+                title: "Yakin ingin menghapus invoice ini?",
+                text: "Semua detail terkait invoice ini juga akan dihapus.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Ya, Hapus!",
+                cancelButtonText: "Batal",
+              });
+              if (!result.isConfirmed) return;
 
-                // 3. Bulk delete untuk semua detail terkait (jika ada)
-                if (relatedDetails.length > 0) {
-                  const detailIds = relatedDetails.map((d) => d.id);
+              addActionToQueue("Menghapus invoice dan detail", async () => {
+                try {
+                  // 1. Ambil semua detail terbaru
+                  let allDetails = await fetchData("details");
+
+                  // 2. Filter detail yang terkait invoice
+                  const relatedDetails = allDetails.filter(
+                    (d) => d.invoice_id.toString() === id.toString()
+                  );
+
+                  // 3. Bulk delete untuk semua detail terkait (jika ada)
+                  if (relatedDetails.length > 0) {
+                    await fetch(
+                      `${API_URL}?table=details&action=bulk_delete&records=${encodeURIComponent(
+                        JSON.stringify(
+                          relatedDetails.map((d) => ({ id: d.id }))
+                        )
+                      )}`,
+                      { method: "POST" }
+                    );
+                  }
+
+                  // 4. Hapus invoice utamanya
                   await fetch(
-                    `${API_URL}?table=details&action=bulk_delete&records=${encodeURIComponent(
-                      JSON.stringify(relatedDetails.map((d) => ({ id: d.id })))
-                    )}`,
+                    `${API_URL}?table=invoices&action=delete&id=${id}`,
                     {
                       method: "POST",
                     }
                   );
-                }
 
-                // 4. Hapus invoice utamanya
-                await fetch(
-                  `${API_URL}?table=invoices&action=delete&id=${id}`,
-                  { method: "POST" }
-                );
+                  // 5. Verifikasi penghapusan
+                  const allInvoices = await fetchData("invoices");
+                  allDetails = await fetchData("details");
+                  cachedDetails = allDetails;
 
-                // 5. Verifikasi penghapusan
-                const allInvoices = await fetchData("invoices");
-                allDetails = await fetchData("details");
-                cachedDetails = allDetails;
-
-                const invoiceDeleted = !allInvoices.find(
-                  (x) => x.id.toString() === id.toString()
-                );
-                const detailsDeleted = !allDetails.some(
-                  (d) => d.invoice_id.toString() === id.toString()
-                );
-
-                if (invoiceDeleted && detailsDeleted) {
-                  return Promise.resolve();
-                } else {
-                  return Promise.reject(
-                    new Error("Gagal menghapus invoice atau detail")
+                  const invoiceDeleted = !allInvoices.find(
+                    (x) => x.id.toString() === id.toString()
                   );
-                }
-              } catch (err) {
-                return Promise.reject(err);
-              }
-            });
-          })
-        );
+                  const detailsDeleted = !allDetails.some(
+                    (d) => d.invoice_id.toString() === id.toString()
+                  );
 
-        // Submit form Edit Invoice
-        document
-          .getElementById("formEditInvoice")
-          .addEventListener("submit", async (e) => {
+                  if (invoiceDeleted && detailsDeleted) {
+                    return Promise.resolve();
+                  } else {
+                    return Promise.reject(
+                      new Error("Gagal menghapus invoice atau detail")
+                    );
+                  }
+                } catch (err) {
+                  return Promise.reject(err);
+                }
+              });
+
+              return;
+            }
+          }
+        ); // end delegated click
+
+        // Pasang submit handler formEditInvoice SEKALI (agar tidak terpasang berulang)
+        const formEdit = document.getElementById("formEditInvoice");
+        if (formEdit && !formEdit.dataset.handlerAttached) {
+          formEdit.addEventListener("submit", async (e) => {
             e.preventDefault();
 
             const btn = document.getElementById("btnEditInvoice");
@@ -1869,9 +1887,9 @@
               .value.trim();
 
             let hasError = false;
-            const showErr = (id, msg) => {
-              document.getElementById(id).textContent = msg;
-              document.getElementById(id).classList.remove("d-none");
+            const showErr = (idErr, msg) => {
+              document.getElementById(idErr).textContent = msg;
+              document.getElementById(idErr).classList.remove("d-none");
               hasError = true;
             };
 
@@ -1885,7 +1903,7 @@
             if (!total) showErr("errorEditTotalInv", "Total wajib diisi");
             if (hasError) return;
 
-            // ✅ Tutup modal langsung setelah validasi sukses
+            // Tutup modal langsung setelah validasi sukses
             $("#modal-edit-invoice").modal("hide");
 
             // Masukkan proses ke queue
@@ -1907,17 +1925,26 @@
                     `&tanggal_lunas=${encodeURIComponent(lunasDate)}`,
                   { method: "POST" }
                 );
-              } catch {}
+              } catch (err) {
+                // ignore — verifikasi manual di bawah akan mengecek
+              }
 
-              // ✅ Verifikasi manual
+              // Verifikasi manual
               const all = await fetchData("invoices");
               if (all.find((x) => x.id == id)) {
-                return Promise.resolve(); // sukses
+                return Promise.resolve();
               } else {
                 return Promise.reject(new Error("Gagal memperbarui invoice"));
               }
             });
           });
+
+          // Tandai agar tidak dipasang dua kali
+          formEdit.dataset.handlerAttached = "1";
+        }
+
+        // Tandai fungsi sudah diinisialisasi
+        setupInvoiceActions._initialized = true;
       }
 
       // Handler klik tombol Lihat Detail
